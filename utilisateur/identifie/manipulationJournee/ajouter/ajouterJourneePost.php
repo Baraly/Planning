@@ -30,7 +30,7 @@ else {
         header("location: ajouterJournee.php?error=date&idHoraire=" . $donnees['idHoraire'] . "&date=" . $jour . "&hDebut=" . $heureDebut . "&hFin=" . $heureFin . "&coupure=" . $coupure . "&decouche=" . $_POST['decouche']);
     } else {
         if ($bdd->query("SELECT idSociete FROM User WHERE id = '$id' AND idSociete IS NOT NULL")->fetch()) {
-            $listeCoupure = $bdd->query("SELECT borneDebut, borneFin, temps FROM User, Coupure WHERE User.idSociete = Coupure.idSociete");
+            $listeCoupure = $bdd->query("SELECT borneDebut, borneFin, temps FROM User, Coupure WHERE User.idSociete = Coupure.idSociete AND User.id = '$id'");
 
             $tempsTravailleSeconde = differenceHeuresEnSecondes($heureDebut, $heureFin);
 

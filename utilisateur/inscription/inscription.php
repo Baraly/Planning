@@ -189,7 +189,7 @@
 
                     $request = $bdd->query("SELECT * FROM Societe");
                     while ($donnee = $request->fetch()) {
-                        if ($_GET['societe'] == $donnee['nomSociete']) {
+                        if ($_GET['societe'] == $donnee['id']) {
                             echo "<option value='" . $donnee['id'] . "' selected>" . $donnee['nomSociete'] . "</option>";
                             $autre = false;
                         }

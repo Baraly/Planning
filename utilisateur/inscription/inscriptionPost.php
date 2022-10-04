@@ -17,12 +17,12 @@ $societe = $_GET['societe'];
 
 if ($info = $bdd->query("SELECT id, nom, prenom FROM User WHERE email = '$email'")->fetch()) {
     $message = "Un utilisateur a essayé de se créer un compte avec l'adresse email de <a style='color: royalblue; background-color: white; box-shadow: none; margin: 0; padding: 0' href='../utilisateur/index.php?idUser=" . $info['id'] . "'>" . strtoupper($info['nom']) . " " . $info['prenom'] . "</a>.";
-    $bdd->exec("INSERT INTO Evenement(type, description, important) VALUES('Création de compte', '$message', 1)");
+    $bdd->exec('INSERT INTO Evenement(type, description, important) VALUES("Création de compte", "' . $message . '", 1)');
     header("location: inscription.php?error=email&nom=$nom&prenom=$prenom&email=$email&genre=$genre&code=$code&societe=$societe");
 }
 elseif ($info = $bdd->query("SELECT id, nom, prenom FROM User WHERE code = '$code'")->fetch()) {
     $message = "Un utilisateur a essayé de se créer un compte avec la clé personnelle de <a style='color: royalblue; background-color: white; box-shadow: none; margin: 0; padding: 0' href='../utilisateur/index.php?idUser=" . $info['id'] . "'>" . strtoupper($info['nom']) . " " . $info['prenom'] . "</a>.";
-    $bdd->exec("INSERT INTO Evenement(type, description, important) VALUES('Création de compte', '$message', 1)");
+    $bdd->exec('INSERT INTO Evenement(type, description, important) VALUES("Création de compte", "' . $message . '", 1)');
     header("location: inscription.php?error=code&nom=$nom&prenom=$prenom&email=$email&genre=$genre&code=$code&societe=$societe");
 }
 else {
