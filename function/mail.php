@@ -15,7 +15,7 @@ function EnvoyerMail($emailDestinataire, $nom, $prenom, $sujet, $message){
         $mail->Host       = 'mail.baraly.fr';                     //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
         $mail->Username   = 'planning_contact@baraly.fr';                     //SMTP username
-        $mail->Password   = 'baraly.fr';                               //SMTP password
+        $mail->Password   = 'INSERER MDP';                               //SMTP password
         $mail->SMTPSecure = 'ssl';            //Enable implicit TLS encryption
         $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
@@ -56,7 +56,7 @@ function EnvoyerMailAvecFichier($emailDestinataire, $nom, $prenom, $sujet, $mess
         $mail->Host       = 'mail.baraly.fr';                     //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
         $mail->Username   = 'planning_contact@baraly.fr';                     //SMTP username
-        $mail->Password   = 'baraly.fr';                               //SMTP password
+        $mail->Password   = 'INSERER MDP';                               //SMTP password
         $mail->SMTPSecure = 'ssl';            //Enable implicit TLS encryption
         $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
