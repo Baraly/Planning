@@ -243,9 +243,9 @@ else {
                         <?php
 
                         if(isset($_POST['annee']) AND $_POST['annee'] != 'all')
-                            $listeMoisAnnee = $bdd->query("SELECT MONTH(datage) AS mois, YEAR(datage) AS annee FROM Horaire WHERE idUser = '$idUser' AND idHoraire NOT IN (SELECT idHoraire FROM HorairePoubelle) AND YEAR(datage) = '" . $_POST['annee'] . "' GROUP BY MONTH(datage), YEAR(datage) ORDER BY YEAR(datage)");
+                            $listeMoisAnnee = $bdd->query("SELECT MONTH(datage) AS mois, YEAR(datage) AS annee FROM Horaire WHERE idUser = '$idUser' AND idHoraire NOT IN (SELECT idHoraire FROM HorairePoubelle) AND YEAR(datage) = '" . $_POST['annee'] . "' GROUP BY MONTH(datage), YEAR(datage) ORDER BY YEAR(datage), MONTH(datage)");
                         else
-                            $listeMoisAnnee = $bdd->query("SELECT MONTH(datage) AS mois, YEAR(datage) AS annee FROM Horaire WHERE idUser = '$idUser' AND idHoraire NOT IN (SELECT idHoraire FROM HorairePoubelle) GROUP BY MONTH(datage), YEAR(datage) ORDER BY YEAR(datage)");
+                            $listeMoisAnnee = $bdd->query("SELECT MONTH(datage) AS mois, YEAR(datage) AS annee FROM Horaire WHERE idUser = '$idUser' AND idHoraire NOT IN (SELECT idHoraire FROM HorairePoubelle) GROUP BY MONTH(datage), YEAR(datage) ORDER BY YEAR(datage), MONTH(datage)");
 
                         $anneeUserVariable = "";
                         $rien = true;

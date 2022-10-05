@@ -30,6 +30,23 @@ $nbConnexionSupprime = $bdd->query("SELECT COUNT(*) AS nb FROM Connexion WHERE C
 if($bdd->exec("DELETE FROM Connexion WHERE CURDATE() = DATE_ADD(DATE(dateConnexion), INTERVAL 90 DAY)"))
     $nbSuppresion += (int)$nbConnexionSupprime['nb'] ;
 
+
+// Suppression des Informations qui ont été clôturé il y a 3 jours
+
+$nbInformationSupprime = $bdd->query("SELECT COUNT(*) AS nb FROM MessageInfo WHERE CURDATE() = DATE_ADD(DATE(dateCloture), INTERVAL 3 DAY)")->fetch();
+$idMessageInfoSupprime = $bdd->query("SELECT id FROM MessageInfo WHERE CURDATE() = DATE_ADD(DATE(dateCloture), INTERVAL 3 DAY)");
+
+while($msgInfo = $idMessageInfoSupprime->fetch()) {
+    if($bdd->exec("DELETE FROM LuMessageInfo WHERE idMessageInfo = '" . $msgInfo['id'] . "'"))
+        $nbSuppresion ++;
+}
+
+if($bdd->exec("DELETE FROM MessageInfo WHERE CURDATE() = DATE_ADD(DATE(dateCloture), INTERVAL 3 DAY)"))
+    $nbSuppresion += (int)$nbInformationSupprime['nb'] ;
+
+
+
+// Conclusion
 $type = "Automatisation de la suppression d'éléments";
 if($nbSuppresion > 1)
     $bdd->exec("INSERT INTO Evenement (type, description) VALUES ('$type', '" . $nbSuppresion . " éléments ont été supprimés automatiquement de la base de données !')");

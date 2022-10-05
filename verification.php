@@ -292,7 +292,7 @@ elseif(isset($_GET['clePersonnelleOubliee']) and !empty($_GET['email']) and !emp
                             utilisée.<br><br>
                             Si vous rencontrez des difficultés à vous connecter à votre compte, alors veuillez contacter le
                             support :
-                            <a href="mailto:planning@baraly.fr" style="background-color: white; color: royalblue">planning@baraly.fr</a>
+                            <a href="mailto:planning_contact@baraly.fr" style="background-color: white; color: royalblue">planning_contact@baraly.fr</a>
                         </p>
                         <a class="normalFontSize" href="#" onclick="closePopup()">J'ai compris</a>
                     </div>

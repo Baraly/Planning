@@ -125,7 +125,7 @@
                                 utilisée.<br><br>
                                 Si vous rencontrez des difficultés à vous connecter à votre compte, alors veuillez contacter le
                                 support :
-                                <a href="mailto:planning@baraly.fr">planning@baraly.fr</a>
+                                <a href="mailto:planning_contact@baraly.fr">planning_contact@baraly.fr</a>
                             </p>
                             <a href="#" onclick="closePopup()">J'ai compris</a>
                         </div>
@@ -142,7 +142,7 @@
                                 utilisée.<br><br>
                                 Si vous rencontrez des difficultés à vous connecter à votre compte, alors veuillez contacter le
                                 support :
-                                <a href="mailto:planning@baraly.fr">planning@baraly.fr</a>
+                                <a href="mailto:planning_contact@baraly.fr">planning_contact@baraly.fr</a>
                             </p>
                             <a href="#" onclick="closePopup()">J'ai compris</a>
                         </div>

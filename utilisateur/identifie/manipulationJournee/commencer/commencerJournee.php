@@ -209,6 +209,71 @@ else {
         <?php
     }
     else {
+
+        if($infoMessage = $bdd->query("SELECT id, message FROM MessageInfo JOIN LuMessageInfo ON MessageInfo.id = idMessageInfo WHERE idUser = '" . $_SESSION['id'] . "' AND dateLecture IS NULL AND (dateCloture IS NULL OR DATEDIFF(dateCloture, CURDATE()) > 0)")->fetch()) {
+            ?>
+                <style>
+                    .overlay {
+                        position: fixed;
+                        top: 0;
+                        bottom: 0;
+                        right: 0;
+                        left: 0;
+                        background-color: rgba(39, 55, 70, 0.9);
+                        z-index: 20;
+                    }
+                    .subOverlay {
+                        position: relative;
+                        height: 100%;
+                        width: 100%;
+                        text-align: center;
+                    }
+                    .content {
+                        position: absolute;
+                        z-index: 21;
+                        border-radius: 20px;
+                        padding: 1% 6%;
+                        background-color: white;
+                        display: inline-block;
+                        right: 8%;
+                        left: 8%;
+                        top: 18%;
+                        bottom: 18%;
+                        font-size: 300%;
+                        text-align: left;
+                        overflow: auto;
+                    }
+                    .content a {
+                        display: inline-block;
+                        background-color: #212F3D;
+                        color: white;
+                        text-decoration: none;
+                        padding: 2% 4%;
+                        border-radius: 20px;
+                        margin-bottom: 20px;
+                    }
+                    hr {
+                        margin: 20px 0;
+                    }
+                </style>
+            <div class="overlay" id="overlay">
+                <div class="subOverlay">
+                    <div class="content">
+                        <p>
+                            <div style="text-align: center">
+                                <span style="font-weight: bold; color: royalblue">-- Information --</span>
+                            </div>
+                            <hr>
+                            <?= $infoMessage['message'] ?>
+                        </p>
+                        <div style="text-align: center">
+                            <a href="../lireMessageInfo.php?updateInformation=<?= $infoMessage['id'] ?>">J'ai compris</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php
+        }
         ?>
         <p style="font-size: 325%">La journée est finie</p>
         <?php
