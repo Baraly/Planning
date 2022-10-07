@@ -81,22 +81,8 @@ include_once '../function/bdd.php';
 if ((!empty($_POST['n1']) or (isset($_POST['n1']) and $_POST['n1'] == "0")) and (!empty($_POST['n2']) or (isset($_POST['n2']) and $_POST['n2'] == "0")) and (!empty($_POST['n3']) or (isset($_POST['n3']) and $_POST['n3'] == "0")) and (!empty($_POST['n4']) or (isset($_POST['n4']) and $_POST['n4'] == "0")) and (!empty($_POST['n5']) or (isset($_POST['n5']) and $_POST['n5'] == "0")) and (!empty($_POST['n6']) or (isset($_POST['n6']) and $_POST['n6'] == "0"))) {
     $code = $_POST['n1'] . $_POST['n2'] . $_POST['n3'] . $_POST['n4'] . $_POST['n5'] . $_POST['n6'];
 
-    if(!isset($_SESSION['error'])) {
-        $_SESSION['error'] = 0;
-    }
-
-    // echo "<h1>ERROR = " . $_SESSION['error'] . "</h1>";
-
-    if ($_SESSION['error'] >= 5) {
-        if ($_SESSION['error'] == 5){
-            $bdd->exec("INSERT INTO BlockUser(ipAdresse) VALUES('" . $_SERVER['HTTP_X_FORWARDED_FOR'] . "')");
-            $bdd->exec("INSERT INTO Evenement (type, description) VALUES('Bloquage d un utilisateur', 'Un utilisateur a tenté de se connecter au moins 5 fois à un compte.')");
-            // echo "<h1>ET HOP BLOCKÉ !</h1>";
-        }
-        $_SESSION['error'] += 1;
-    }
-    elseif ($donnees = $bdd->query("SELECT * FROM User WHERE code = '$code' AND bloquer = 0 AND desactiver = 0")->fetch()) {
-        if(!$bdd->query("SELECT * FROM BlockUser WHERE ipAdresse = '" . $_SERVER['HTTP_X_FORWARDED_FOR'] . "' AND MONTH(datage) = MONTH(NOW())")->fetch()) {
+    if ($donnees = $bdd->query("SELECT id FROM User WHERE code = '$code' AND bloquer = 0 AND desactiver = 0")->fetch()) {
+        if(!$bdd->query("SELECT id FROM BlockUser WHERE ipAdresse = '" . $_SERVER['HTTP_X_FORWARDED_FOR'] . "' AND estBloque = 1 AND nbTentative >= 5 AND CURDATE() < ALL (SELECT DATE_ADD(datage, INTERVAL dureeBloquage DAY) FROM BlockUser WHERE ipAdresse = '" . $_SERVER['HTTP_X_FORWARDED_FOR'] . "')")->fetch()) {
             $_SESSION['id'] = $donnees['id'];
             $_SESSION['prenom'] = $donnees['prenom'];
 
@@ -128,8 +114,14 @@ if ((!empty($_POST['n1']) or (isset($_POST['n1']) and $_POST['n1'] == "0")) and 
             header("location: identifie/planning.php");
         }
     }
-    else {
-        $_SESSION['error'] += 1;
+    elseif ($bdd->query("SELECT id FROM User WHERE code <> '$code'")->fetch()) {
+        if($infoBloquage = $bdd->query("SELECT id FROM BlockUser WHERE ipAdresse = '" . $_SERVER['HTTP_X_FORWARDED_FOR'] . "' AND CURDATE() < ALL (SELECT DATE_ADD(datage, INTERVAL dureeBloquage DAY) FROM BlockUser WHERE ipAdresse = '" . $_SERVER['HTTP_X_FORWARDED_FOR'] . "')")->fetch()) {
+            $bdd->exec("UPDATE BlockUser SET nbTentative = nbTentative + 1, datage = CURDATE() WHERE id = '" . $infoBloquage['id'] . "'");
+        }
+        else {
+            $bdd->exec("INSERT INTO BlockUser(ipAdresse) VALUES('" . $_SERVER['HTTP_X_FORWARDED_FOR'] . "')");
+        }
+
     }
 }
 

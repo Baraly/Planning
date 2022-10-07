@@ -35,19 +35,22 @@ CREATE TABLE User (
     code VARCHAR(6) NOT NULL,
     inscription DATE NOT NULL,
     idSociete INT DEFAULT NULL,
-    verifie tinyint(4) DEFAULT 0,
+    verifie TINYINT(4) DEFAULT 0,
     cleSecurite TEXT DEFAULT NULL,
-    ancienPlanning tinyint(4) DEFAULT 0,
-    preferenceEmail tinyint(4) DEFAULT 0,
-    bloquer tinyint(4) DEFAULT 0,
-    desactiver tinyint(4) DEFAULT 0,
+    ancienPlanning TINYINT(4) DEFAULT 0,
+    preferenceEmail TINYINT(4) DEFAULT 0,
+    bloquer TINYINT(4) DEFAULT 0,
+    desactiver TINYINT(4) DEFAULT 0,
     FOREIGN  KEY (idSociete) REFERENCES Societe(id)
 );
 
 CREATE TABLE BlockUser (
-  ipAdresse VARCHAR(20) NOT NULL,
-  datage DATETIME DEFAULT current_timestamp(),
-  PRIMARY KEY(ipAdresse, datage)
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    ipAdresse VARCHAR(20) NOT NULL,
+    datage DATE DEFAULT CURRENT_DATE,
+    nbTentative INT DEFAULT 1,
+    dureeBloquage INT DEFAULT 30,
+    estBloque TINYINT(4) DEFAULT 1
 );
 
 CREATE TABLE Connexion (
@@ -64,7 +67,7 @@ CREATE TABLE Evenement (
   dateEvenement DATETIME DEFAULT current_timestamp(),
   type VARCHAR(50) NOT NULL,
   description TEXT NOT NULL,
-  important tinyint(4) DEFAULT 0,
+  important TINYINT(4) DEFAULT 0,
   connaissance DATETIME DEFAULT NULL,
   FOREIGN KEY (idUser) REFERENCES User(id)
 );
@@ -76,7 +79,7 @@ CREATE TABLE Horaire (
   hDebut TIME NOT NULL,
   hFin TIME DEFAULT NULL,
   coupure TIME DEFAULT '00:00:00',
-  decouchage tinyint(4) DEFAULT 0,
+  decouchage TINYINT(4) DEFAULT 0,
   FOREIGN KEY (idUser) REFERENCES User(id)
 );
 

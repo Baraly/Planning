@@ -87,7 +87,7 @@ else {
 
             <?php
 
-            if(isset($_GET['error']) or isset($_GET['succes'])) {
+            if(isset($_GET['error']) or isset($_GET['succes']) or isset($_GET['supprimerPopup'])) {
                 ?>
             .overlay {
                 position: fixed;
@@ -158,6 +158,34 @@ else {
 
         $idInfo = $_GET['idInfo'];
 
+        if(isset($_GET['supprimer'])) {
+            $bdd->exec("DELETE FROM LuMessageInfo WHERE idMessageInfo = '$idInfo' AND idUser = '" . $_GET['idUser'] . "'");
+            header("location: detailInformation.php?idInfo=$idInfo");
+        }
+
+        if(isset($_GET['supprimerPopup'])) {
+            $infoUserPopup = $bdd->query("SELECT nom, prenom FROM User WHERE id = '" . $_GET['idUser'] . "'")->fetch();
+            ?>
+            <div class="overlay" id="overlay">
+                <div class="subOverlay">
+                    <div class="content">
+                        <p>
+                            Vous êtes sur le point de supprimer <?= strtoupper($infoUserPopup['nom']) ?> <?= $infoUserPopup['prenom'] ?> de cette liste d'information.
+                        </p>
+                        <div  style="display: grid; grid-template-columns: 1fr 1fr; justify-content: space-around">
+                            <div>
+                                <a href="#" onclick="closePopup()">annuler</a>
+                            </div>
+                            <div>
+                                <a href="detailInformation.php?idInfo=<?= $idInfo ?>&idUser=<?= $_GET['idUser'] ?>&supprimer">approuver</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php
+        }
+
         if (isset($_GET['error'])) {
             $message = "";
             if($_GET['error'] == 'BDD')
@@ -213,7 +241,7 @@ else {
                         echo "<li>" . strtoupper($requete['nom']) . " " . $requete['prenom'] . " <span style='position: absolute; right: 0'>" . date('d/m/Y H:i', strtotime($requete['dateLecture'])) . "</span></li>";
                     }
 
-                    $requetePasLu = $bdd->query("SELECT nom, prenom, dateLecture FROM LuMessageInfo, User WHERE LuMessageInfo.idUser = User.id AND idMessageInfo = '$idInfo' AND dateLecture IS NULL");
+                    $requetePasLu = $bdd->query("SELECT nom, prenom, dateLecture, idUser FROM LuMessageInfo, User WHERE LuMessageInfo.idUser = User.id AND idMessageInfo = '$idInfo' AND dateLecture IS NULL");
 
                     $rien2 = true;
                     while($requete = $requetePasLu->fetch()) {
@@ -223,7 +251,7 @@ else {
                             echo "<li style='margin-bottom: 10px; color: #EF5050; text-align: center'>pas encore lu</li>";
                             $rien2 = false;
                         }
-                        echo "<li>" . strtoupper($requete['nom']) . " " . $requete['prenom'] . " <span style='position: absolute; right: 0; color: #D35400'>en attente</span></li>";
+                        echo "<li><a href='detailInformation.php?idInfo=$idInfo&idUser=" . $requete['idUser'] . "&supprimerPopup' style='text-decoration: none'><span style='color: black'>" . strtoupper($requete['nom']) . " " . $requete['prenom'] . " </span><span style='position: absolute; right: 0; color: #D35400'>en attente</span></a></li>";
                     }
 
                     ?>

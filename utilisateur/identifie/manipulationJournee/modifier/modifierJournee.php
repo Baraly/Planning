@@ -168,21 +168,28 @@ else {
                         </div>
                         <div  style="text-align: left">
                             <select name="coupure" id='pause'>
+                                <option value="automatique">Automatique</option>
                             <?php
 
+                            $coupureTrouvee = false;
+
                             while($coupure = $coupureSociete->fetch()) {
-                                $coupureInterface = '';
 
                                 if ((int)$coupure['temps'][0] * 10 + (int)$coupure['temps'][1] > 0)
                                     $coupureInterface = (int)$coupure['temps'][0] * 10 + (int)$coupure['temps'][1] . "h" . $coupure['temps'][3]  . $coupure['temps'][4];
                                 else
                                     $coupureInterface = (int)$coupure['temps'][3] * 10 + (int)$coupure['temps'][4] . "min";
 
-                                if ($infoJournee['coupure'] == $coupure['temps'])
+                                if ($infoJournee['coupure'] == $coupure['temps']) {
+                                    $coupureTrouvee = true;
                                     echo "<option value='" . $coupure['temps'] . "' selected>" . $coupureInterface . "</option>";
+                                }
                                 else
                                     echo "<option value='" . $coupure['temps'] . "'>" . $coupureInterface . "</option>";
                             }
+
+                            if(!$coupureTrouvee)
+                                echo "<option value='" . $infoJournee['coupure'] . "' selected>" . $infoJournee['coupure'] . "</option>";
 
                             ?>
                             </select>
@@ -242,7 +249,7 @@ else {
             }
             ?>
 
-            <a href="modifierJournee.php?mois=<?= $_GET['mois'] ?>&annee=<?= $_GET['annee'] ?>&idHoraire=<?= $_GET['idHoraire']?>&supprimerJournee" style="color: white; background-color: red; border-radius: 20px; padding: 2% 4%; margin-top: 15%; display: inline-block; font-size: 310%">Supprimer la journée</a>
+            <a href="modifierJournee.php?mois=<?= $_GET['mois'] ?>&annee=<?= $_GET['annee'] ?>&idHoraire=<?= $_GET['idHoraire']?>&supprimerJournee" style="color: white; background-color: red; border-radius: 20px; padding: 2% 4%; margin-top: 12%; display: inline-block; font-size: 310%">Supprimer la journée</a>
 
 
             <?php

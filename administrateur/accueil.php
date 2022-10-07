@@ -120,8 +120,10 @@ else {
 </head>
 <body>
 <div style="margin-bottom: 20px">
-    <h1 style="display: inline-block; padding: 0 0; margin: 0 20px 0 0; font-size: 30px">Planning</h1>
-    <p style="display: inline-block; color: rgba(0, 0, 0, 0.5); font-size: 24px; margin: 0 0; padding: 0 0">Espace administrateur</p>
+    <a href="accueil.php" style="color: black; text-decoration: none; display: inline-block">
+        <h1 style="display: inline-block; padding: 0 0; margin: 0 20px 0 0; font-size: 30px">Planning</h1>
+        <p style="display: inline-block; color: rgba(0, 0, 0, 0.5); font-size: 24px; margin: 0 0; padding: 0 0">Espace administrateur</p>
+    </a>
 </div>
 <div class="interface">
     <?php
@@ -141,7 +143,7 @@ else {
                 <ul>
                     <?php
 
-                    $requete = $bdd->query("SELECT * FROM MessageInfo");
+                    $requete = $bdd->query("SELECT * FROM MessageInfo ORDER BY dateMessage DESC");
 
                     while ($donnees = $requete->fetch()) {
                         if(!empty($donnees['dateCloture']) and floor((strtotime($donnees['dateCloture']) - strtotime(date('Y-m-d')))/(60*60*24)) <= 1)
@@ -156,95 +158,80 @@ else {
                 <a href="information/creationInformation.php">AJOUTER</a>
             </div>
         </div>
-        <!-- <div class="etiquette" style="grid-column: 3/5; grid-row: 1/2">
+        <div class="etiquette" style="grid-column: 3/5; grid-row: 1/2">
             <div style="margin: 0 10px; padding: 0; font-size: 24px;">
-                <p class="title">Liste des Entreprises</p>
+                <p class="title">Liste de ...</p>
                 <hr>
             </div>
             <div class="listInfos">
-                <ul>
-                    <?php
 
-                    $nomSociete = $bdd->query("SELECT nomSociete FROM Societe");
-
-                    while ($societe = $nomSociete->fetch()) {
-                        $nbUser = $bdd->query("SELECT COUNT(*) AS nbUser FROM User, Societe WHERE idSociete = Societe.id AND Societe.nomSociete = '" . $societe['nomSociete'] . "'")->fetch();
-                        echo "<li><p><a href='societe/infoSociete.php?nomSociete=" . $societe['nomSociete'] . "'>" . strtoupper($societe['nomSociete']) . "</a></p><span>" . $nbUser['nbUser'] . " utilisateurs</span></li>";
-                    }
-                    ?>
-                </ul>
             </div>
             <div class="button">
-                <a href="societe/ajoutSociete.php">AJOUTER</a>
+                <a href="#">AJOUTER</a>
             </div>
         </div>
         <div class="etiquette" style="grid-column: 5/7; grid-row: 1/2; grid-template-rows: 44px auto 2px">
             <div style="margin: 0 10px; padding: 0; font-size: 24px;">
-                <p class="title">Liste des Requêtes</p>
+                <p class="title">Liste de ...</p>
                 <hr>
             </div>
             <div class="listInfos">
-                <ul>
-                    <?php
 
-                    $requete = $bdd->query("SELECT Requete.id AS id, nom, prenom, User.id AS ID FROM Requete, User WHERE Requete.idUser = User.id AND dateTraitement IS NULL");
-
-                    $rien = true;
-
-                    while ($donnees = $requete->fetch()) {
-                        $rien = false;
-
-                        echo "<li><p><a href='utilisateur/requete/infoRequete.php?idUser=" . $donnees['ID'] . "&idRequete=" . $donnees['id'] . "' style='margin: 0; padding: 0; color: black; text-decoration: none'>N°" . $donnees['id'] . " " . strtoupper($donnees['nom']) . " " . strtoupper($donnees['prenom'])[0] . ".</a></p></li>";
-                    }
-
-                    if ($rien) {
-                        echo "<li><p>Aucune requête</p></li>";
-                    }
-
-                    ?>
-                </ul>
             </div>
             <div></div>
         </div>
-        <div class="etiquette" style="grid-column: 3/6; grid-row: 2/3">
+        <div style="grid-column: 1/2; grid-row: 2/3; position: relative">
+            <a href="accueil.php" style="height: 140px; border-radius: 10px; text-align: center; border: 1px solid white; box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.25); text-decoration: none; color: royalblue; position: absolute; bottom: 0; left: 0; right: 0; font-size: 26px">
+                <div style="display: inline-block; left: 50%; top: 50%; -ms-transform: translateY(50%); transform: translateY(50%);">
+                    Page précédente
+                </div>
+            </a>
+        </div>
+        <div class="etiquette" style="grid-column: 2/5; grid-row: 2/3">
             <div style="margin: 0 10px; padding: 0; font-size: 24px">
-                <p class="title">Liste des Événements</p>
+                <p class="title">Liste des Blocages</p>
                 <hr>
             </div>
             <div class="listInfos">
                 <ul>
                     <?php
 
-                    $requete = $bdd->query("SELECT * FROM Evenement ORDER BY dateEvenement DESC");
+                    $requete = $bdd->query("SELECT * FROM BlockUser ORDER BY datage DESC");
 
                     $rien = true;
 
                     while ($donnees = $requete->fetch()) {
                         $rien = false;
-                        if($donnees['important'])
-                            echo "<a style='color: black' href='evenement/infoEvenement.php?id=" . $donnees['id'] . "&from=accueil' style='color: black'><li style='margin-bottom: 10px'><p>" . $donnees['type'] . " <span style='position: relative; color: white; background-color: red; padding: 3px 14px; border-radius: 10px; font-size: 20px'>important</span></p></li></a>";
+                        if($donnees['nbTentative'] >= 5 and $donnees['estBloque'] == 1 and strtotime(date('Y-m-d', strtotime($donnees['datage'])) . " + ". $donnees['dureeBloquage'] . " days") >= strtotime(date('Y-m-d')))
+                            echo "<a style='color: black' href='blocage/detailBlocage.php?id=" . $donnees['id'] . "' style='color: black'><li style='margin-bottom: 10px'><p>" . date('d/m/Y', strtotime($donnees['datage'])) . " - " . $donnees['ipAdresse'] . "<span style='position: absolute; color: #E74C3C; padding: 3px 14px; border-radius: 10px; font-size: 20px; right: 10px'>bloqué</span></p></li></a>";
+                        elseif ($donnees['nbTentative'] >= 5 and $donnees['estBloque'] == 1 and strtotime(date('Y-m-d', strtotime($donnees['datage'])) . " + ". $donnees['dureeBloquage'] . " days") < strtotime(date('Y-m-d')))
+                            echo "<a style='color: black' href='blocage/detailBlocage.php?id=" . $donnees['id'] . "' style='color: black'><li style='margin-bottom: 10px'><p>" . date('d/m/Y', strtotime($donnees['datage'])) . " - " . $donnees['ipAdresse'] . "<span style='position: absolute; color: #2ECC71; padding: 3px 14px; border-radius: 10px; font-size: 20px; right: 10px'>débloqué</span></p></li></a>";
+                        elseif ($donnees['nbTentative'] >= 5 and $donnees['estBloque'] == 0)
+                            echo "<a style='color: black' href='blocage/detailBlocage.php?id=" . $donnees['id'] . "' style='color: black'><li style='margin-bottom: 10px'><p>" . date('d/m/Y', strtotime($donnees['datage'])) . " - " . $donnees['ipAdresse'] . "<span style='position: absolute; color: #2ECC71; padding: 3px 14px; border-radius: 10px; font-size: 20px; right: 10px'>débloqué</span></p></li></a>";
                         else
-                            echo "<a style='color: black' href='evenement/infoEvenement.php?id=" . $donnees['id'] . "&from=accueil' style='color: black'><li style='margin-bottom: 10px'><p>" . $donnees['type'] . "</p></li></a>";
+                            echo "<a style='color: black' href='blocage/detailBlocage.php?id=" . $donnees['id'] . "' style='color: black'><li style='margin-bottom: 10px'><p>" . date('d/m/Y', strtotime($donnees['datage'])) . " - " . $donnees['ipAdresse'] . "</p></li></a>";
                     }
 
                     if ($rien) {
-                        echo "<li><p>Aucun évènement</p></li>";
+                        echo "<li><p>Aucun blocage</p></li>";
                     }
 
                     ?>
                 </ul>
             </div>
+        </div>
+        <div class="etiquette" style="grid-column: 5/7; grid-row: 2/3">
+            <div style="margin: 0 10px; padding: 0; font-size: 24px;">
+                <p class="title">Liste de ...</p>
+                <hr>
+            </div>
+            <div class="listInfos">
+
+            </div>
             <div class="button">
-                <a href="evenement/historique.php">HISTORIQUE</a>
+                <a href="#">AJOUTER</a>
             </div>
         </div>
-        <div style="grid-column: 6/7; grid-row: 2/3; position: relative">
-            <a href="accueil.php?page=2" style="height: 140px; border-radius: 10px; text-align: center; border: 1px solid white; box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.25); text-decoration: none; color: royalblue; position: absolute; bottom: 0; left: 0; right: 0; font-size: 26px">
-                <div style="display: inline-block; left: 50%; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);">
-                    Page suivante
-                </div>
-            </a>
-        </div>-->
         <?php
     }
     else {

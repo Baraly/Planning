@@ -140,7 +140,7 @@ elseif ($bdd->query("SELECT nom FROM User WHERE id = '" . $_SESSION['id'] . "' A
             </tr>
         <?php }
         $heures = (int)($nbHeureTotale / 60);
-        $minutes = $nbHeureTotale - $heures * 60;
+        $minutes = (int)($nbHeureTotale - $heures * 60);
         if ($heures < 10)
             $strNbHeureTotale = "0" . $heures;
         else
