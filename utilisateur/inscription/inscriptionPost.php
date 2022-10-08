@@ -82,7 +82,7 @@ else {
         EnvoyerMail($email, $nom, $prenom, "Bienvenu sur Planning", $message);
 
         $message = "Un nouvel utilisateur s'est inscrit";
-        $bdd->exec("INSERT INTO Evenement (idUser, type, description) VALUES ('$idNumber', 'Inscription', '$message' )");
+        $bdd->exec('INSERT INTO Evenement (idUser, type, description) VALUES ("$idNumber", "Inscription", "$message" )');
 
         ?>
         <!DOCTYPE html>

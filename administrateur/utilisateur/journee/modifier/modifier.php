@@ -251,12 +251,19 @@ else {
 
                                         $listeCoupure = $bdd->query("SELECT temps FROM Coupure WHERE idSociete = '" . $userInfo['idSociete'] . "'");
 
+                                        $coupureTrouvee = false;
+
                                         while ($temps = $listeCoupure->fetch()) {
-                                            if ($infoJournee['coupure'] == $temps['temps'])
+                                            if ($infoJournee['coupure'] == $temps['temps']) {
+                                                $coupureTrouvee = true;
                                                 echo "<option value='" . $temps['temps'] . "' selected>" . $temps['temps'] . "</option>";
+                                            }
                                             else
                                                 echo "<option value='" . $temps['temps'] . "'>" . $temps['temps'] . "</option>";
                                         }
+
+                                        if(!$coupureTrouvee)
+                                            echo "<option value='" . $infoJournee['coupure'] . "' selected>" . $infoJournee['coupure'] . "</option>";
 
                                         ?>
                                     </select>

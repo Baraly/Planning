@@ -82,7 +82,8 @@ if ((!empty($_POST['n1']) or (isset($_POST['n1']) and $_POST['n1'] == "0")) and 
     $code = $_POST['n1'] . $_POST['n2'] . $_POST['n3'] . $_POST['n4'] . $_POST['n5'] . $_POST['n6'];
 
     if ($donnees = $bdd->query("SELECT id FROM User WHERE code = '$code' AND bloquer = 0 AND desactiver = 0")->fetch()) {
-        if(!$bdd->query("SELECT id FROM BlockUser WHERE ipAdresse = '" . $_SERVER['HTTP_X_FORWARDED_FOR'] . "' AND estBloque = 1 AND nbTentative >= 5 AND CURDATE() < ALL (SELECT DATE_ADD(datage, INTERVAL dureeBloquage DAY) FROM BlockUser WHERE ipAdresse = '" . $_SERVER['HTTP_X_FORWARDED_FOR'] . "')")->fetch()) {
+        $donnes = $bdd->query("SELECT id FROM BlockUser WHERE ipAdresse = '" . $_SERVER['HTTP_X_FORWARDED_FOR'] . "' AND estBloque = 1 AND nbTentative >= 5 AND CURDATE() <= ALL (SELECT DATE_ADD(datage, INTERVAL dureeBloquage DAY) FROM BlockUser WHERE ipAdresse = '" . $_SERVER['HTTP_X_FORWARDED_FOR'] . "')")->fetch();
+        if(!$donnes) {
             $_SESSION['id'] = $donnees['id'];
             $_SESSION['prenom'] = $donnees['prenom'];
 
@@ -113,9 +114,12 @@ if ((!empty($_POST['n1']) or (isset($_POST['n1']) and $_POST['n1'] == "0")) and 
 
             header("location: identifie/planning.php");
         }
+        else {
+            $bdd->exec("UPDATE BlockUser SET nbTentative = nbTentative + 1, datage = CURDATE() WHERE id = '" . $donnes['id'] . "'");
+        }
     }
     elseif ($bdd->query("SELECT id FROM User WHERE code <> '$code'")->fetch()) {
-        if($infoBloquage = $bdd->query("SELECT id FROM BlockUser WHERE ipAdresse = '" . $_SERVER['HTTP_X_FORWARDED_FOR'] . "' AND CURDATE() < ALL (SELECT DATE_ADD(datage, INTERVAL dureeBloquage DAY) FROM BlockUser WHERE ipAdresse = '" . $_SERVER['HTTP_X_FORWARDED_FOR'] . "')")->fetch()) {
+        if($infoBloquage = $bdd->query("SELECT id FROM BlockUser WHERE ipAdresse = '" . $_SERVER['HTTP_X_FORWARDED_FOR'] . "' AND CURDATE() <= ALL (SELECT DATE_ADD(datage, INTERVAL dureeBloquage DAY) FROM BlockUser WHERE ipAdresse = '" . $_SERVER['HTTP_X_FORWARDED_FOR'] . "')")->fetch()) {
             $bdd->exec("UPDATE BlockUser SET nbTentative = nbTentative + 1, datage = CURDATE() WHERE id = '" . $infoBloquage['id'] . "'");
         }
         else {
