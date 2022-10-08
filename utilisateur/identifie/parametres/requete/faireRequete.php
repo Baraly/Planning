@@ -7,9 +7,9 @@ require_once '../../../../function/bdd.php';
 if(isset($_SESSION['id']))
     $id = $_SESSION['id'];
 
-if (!empty($_GET['idUser']) and !empty($_GET['vkey']))
-    if($bdd->query("SELECT * FROM User WHERE id = '" . $_GET['idUser'] . "' AND cleSecurite = '" . $_GET['vkey'] . "'")->fetch())
-        $id = $_SESSION['id'];
+if (!empty($_GET['idUser']) and !empty($_GET['email']))
+    if($bdd->query("SELECT * FROM User WHERE id = '" . $_GET['idUser'] . "' AND email = '" . $_GET['email'] . "'")->fetch())
+        $id = $_GET['idUser'];
 
 if(isset($id)) {
 $userInfo = $bdd->query("SELECT * FROM User WHERE id ='$id'")->fetch();
@@ -133,7 +133,7 @@ $userInfo = $bdd->query("SELECT * FROM User WHERE id ='$id'")->fetch();
 <body>
 <h1 style="font-size: 350%">Faire une requête</h1>
 
-<form action="faireRequetePost.php?idUser=<?= $id ?>&vkey=<?= $_GET['vkey'] ?>" method="POST">
+<form action="faireRequetePost.php?idUser=<?= $id ?>&email=<?= $_GET['email'] ?>" method="POST">
     <div>
         <p>Nom : <?= strtoupper($userInfo['nom']) ?> <?= $userInfo['prenom'] ?></p>
     </div>
