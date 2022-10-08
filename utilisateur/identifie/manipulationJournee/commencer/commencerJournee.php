@@ -176,7 +176,7 @@ else {
         $fin = $donnees['hFin'];
         $idHoraire = $donnees['idHoraire'];
 
-        if(getSecondeEnHeure(tempsEntreDeuxDateEtHeure(($donnees['datage'] . ' ' . $donnees['hDebut']), date('Y-m-d H:i:s'))) > 20 * 3600)
+        if(tempsEntreDeuxDateEtHeure(($donnees['datage'] . ' ' . $donnees['hDebut']), date('Y-m-d H:i:s')) > 20 * 3600)
             $journeeFinie = true;
 
         //if (differenceHeuresEnSecondes($donnees['hDebut'], date('H:i:s')) > 20 * 3600)
