@@ -116,9 +116,10 @@ include_once '../../function/fonctionJours.php';
                 <?php
 
                 if($infoBlocage['nbTentative'] >= 5 and $infoBlocage['estBloque'] == 1 and strtotime(date('Y-m-d', strtotime($infoBlocage['datage'])) . " + ". $infoBlocage['dureeBloquage'] . " days") >= strtotime(date('Y-m-d'))) {
-                    $dateDeblocage = date('d/m/Y', strtotime(date('Y-m-d', strtotime($infoBlocage['datage'])) . " + ". $infoBlocage['dureeBloquage'] . " days"));
+                    $dateDeblocage = date('d/m/Y', strtotime(date('Y-m-d', strtotime($infoBlocage['datage'])) . " + ". ($infoBlocage['dureeBloquage'] + 1) . " days"));
+                    
                     ?>
-                    <p>Déblocage prévu le <?= $dateDeblocage ?> (dans <?= differenceJours(date('Y-m-d', strtotime($dateDeblocage)), date('Y-m-d')) ?> jours)</p>
+                    <p>Déblocage prévu le <?= $dateDeblocage ?> (dans <?= differenceJours(date('d/m/Y', strtotime($dateDeblocage)), date('d/m/Y', strtotime(date('d/m/Y')))) ?> jours)</p>
                     <p><a href="detailBlocage.php?id=<?= $idBlocage ?>&deblocage" style="color: white; background-color: royalblue; padding: 4px 10px; border-radius: 10px">Débloquer cet utilisateur</a></p>
                     <?php
                 }
