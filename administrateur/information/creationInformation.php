@@ -130,6 +130,45 @@ else {
         }
 
         ?>
+
+            .overlay_message {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                background-color: rgba(39, 55, 70, 0.9);
+                z-index: 20;
+            }
+            .subOverlay_message {
+                position: relative;
+                height: 100%;
+                width: 100%;
+                text-align: center;
+            }
+            .overlay_message .content_message {
+                width: 60%;
+                position: fixed;
+                z-index: 21;
+                border-radius: 20px;
+                padding: 20px 12px;
+                background-color: white;
+                display: inline-block;
+                left: 50%;
+                top: 50%;
+                -ms-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+                font-size: 26px;
+            }
+
+            .overlay_message .content_message a {
+                display: inline-block;
+                background-color: #212F3D;
+                color: white;
+                text-decoration: none;
+                border-radius: 14px;
+                padding: 5px 40px;
+            }
         </style>
     </head>
     <body>
@@ -243,13 +282,30 @@ else {
 
                             </ul>
                     </div>
-                    <div style="margin: 0; padding: 20px 20px; font-size: 20px; text-align: center">
-                        <div style="display: inline-block; text-align: left; width: 30%">
-                            <div>
-                                <div>
-                                    <label for="message">Message :</label>
+
+                        <div class="overlay_message" id="overlay_message" style="display: none">
+                            <div class="subOverlay_message">
+                                <div class="content_message" style="width: 50%; text-align: left">
+                                    <p style="margin: 0; padding: 0">
+                                    <div style="text-align: center">
+                                        <span style="font-weight: bold; color: royalblue">-- Information --</span>
+                                    </div>
+                                    <hr>
+                                    <textarea name="message" required style="width: 96%; height: 400px; font-size: 22px"></textarea>
+                                    </p>
+                                    <div style="text-align: center">
+                                        <a href="#" onclick="closePopupMessage()">Valider le message</a>
+                                    </div>
                                 </div>
-                                <textarea name="message" id="message" required></textarea>
+                            </div>
+                        </div>
+
+                    <div style="margin: 0; padding: 20px 20px; font-size: 20px; text-align: center">
+                        <div style="display: inline-block; text-align: left; width: 40%">
+                            <div>
+                                <p>
+                                    Message : <a href="#" style="color: royalblue; text-decoration: none; background-color: white" onclick="openPopupMessage()">rédiger le message</a>
+                                </p>
                             </div>
                             <div>
                                 <div>
@@ -275,6 +331,13 @@ else {
     <script type="text/javascript">
         function closePopup() {
             document.getElementById("overlay").style.display = "none";
+        }
+
+        function closePopupMessage() {
+            document.getElementById("overlay_message").style.display = "none";
+        }
+        function openPopupMessage() {
+            document.getElementById("overlay_message").style.display = "block";
         }
     </script>
     </body>

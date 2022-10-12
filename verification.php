@@ -264,7 +264,7 @@ elseif (isset($_GET['changementCle']) and !empty($_GET['email'])) {
         if(isset($_SESSION['error'])) {
             $_SESSION['error'] = 0;
         }
-        $bdd->exec("DELETE FROM BlockUser WHERE ipAdresse = '" . $_SERVER['HTTP_X_FORWARDED_FOR'] . "' AND MONTH(datage) = MONTH(NOW())");
+        $bdd->exec("UPDATE BlockUser SET estBloque = -1  WHERE ipAdresse = '" . $_SERVER['HTTP_X_FORWARDED_FOR'] . "' AND estBloque = 1 AND nbTentative >= 5 AND CURDATE() <= ALL (SELECT DATE_ADD(datage, INTERVAL dureeBloquage DAY) FROM BlockUser WHERE ipAdresse = '" . $_SERVER['HTTP_X_FORWARDED_FOR'] . "')");
 
         $bdd->exec("INSERT INTO Evenement(idUser, type, description) VALUES(" . $userInfo['id'] . ", 'Changement clé personnelle', 'Cet utilisateur vient de changer sa clé personnelle.')");
 

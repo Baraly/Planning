@@ -26,9 +26,9 @@ else {
     }
 
     if ($societe != "null")
-        $bbdOK = $bdd->exec("UPDATE User SET nom = '" . $nom . "', prenom = '" . $prenom . "', email = '" . $email . "', telephone = '" . $telephone . "', genre = '" . $genre . "', idSociete = '" . $societe . "', preferenceEmail = '" . $_POST['preferences'] . "' WHERE id = '" . $_GET['idUser'] . "'");
+        $bbdOK = $bdd->exec("UPDATE User SET nom = '" . $nom . "', prenom = '" . $prenom . "', email = '" . $email . "', telephone = '" . $telephone . "', genre = '" . $genre . "', idSociete = '" . $societe . "', preferenceEmail = '" . $_POST['preferences'] . "', ancienPlanning = '" . $_POST['desing'] . "' WHERE id = '" . $_GET['idUser'] . "'");
     else
-        $bbdOK = $bdd->exec("UPDATE User SET nom = '" . $nom . "', prenom = '" . $prenom . "', email = '" . $email . "', telephone = '" . $telephone . "', genre = '" . $genre . "', idSociete = null, preferenceEmail = '" . $_POST['preferences'] . "' WHERE id = '" . $_GET['idUser'] . "'");
+        $bbdOK = $bdd->exec("UPDATE User SET nom = '" . $nom . "', prenom = '" . $prenom . "', email = '" . $email . "', telephone = '" . $telephone . "', genre = '" . $genre . "', idSociete = null, preferenceEmail = '" . $_POST['preferences'] . "', ancienPlanning = '" . $_POST['desing'] . "' WHERE id = '" . $_GET['idUser'] . "'");
 
     if ($bbdOK) {
         header("location: ../index.php?idUser=" . $_GET['idUser']);

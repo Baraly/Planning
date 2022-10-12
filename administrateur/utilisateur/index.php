@@ -177,7 +177,7 @@ if (!empty($_GET['idUser'])) {
 
 <div class="interface">
     <div style="display: grid; grid-template-rows: auto 40px; margin: 0; padding: 0">
-        <div style="padding: 10px 10px" class="info">
+        <div style="padding: 10px 10px; overflow: auto" class="info">
             <p>Nom : <?= strtoupper($userInfo['nom']) ?></p>
             <p>Prénom : <?= $userInfo['prenom'] ?></p>
             <p>
@@ -213,6 +213,17 @@ if (!empty($_GET['idUser'])) {
                     echo "accepte les mails";
                 else
                     echo "refuse les mails";
+
+                ?>
+            </p>
+            <p>
+                Nouveau design :
+                <?php
+
+                if ($userInfo['ancienPlanning'] == 0)
+                    echo "accepte les changements";
+                else
+                    echo "refuse les changements";
 
                 ?>
             </p>

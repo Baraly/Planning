@@ -121,7 +121,6 @@ else {
         }
         <?php
     }
-
     ?>
     </style>
 </head>

@@ -76,6 +76,52 @@ else {
             text-decoration: none;
             padding: 4px 20px;
         }
+
+        <?php
+
+        if(isset($_GET['error'])) {
+            ?>
+        .overlay {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            background-color: rgba(39, 55, 70, 0.9);
+            z-index: 20;
+        }
+        .subOverlay {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            text-align: center;
+        }
+        .overlay .content {
+            width: 60%;
+            position: fixed;
+            z-index: 21;
+            border-radius: 20px;
+            padding: 20px 12px;
+            background-color: white;
+            display: inline-block;
+            left: 50%;
+            top: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            font-size: 26px;
+        }
+
+        .overlay .content a {
+            display: inline-block;
+            background-color: #212F3D;
+            color: white;
+            text-decoration: none;
+            border-radius: 14px;
+            padding: 5px 40px;
+        }
+        <?php
+    }
+    ?>
     </style>
 </head>
 <body>
@@ -110,20 +156,27 @@ if (!empty($_GET['idUser'])) {
     <?php
 
     if (isset($_GET['error'])) {
-        ?>
-        <div style="border-radius: 10px; background-color: #E64D4D; display: inline-block; padding: 0 60px">
-            <p style="font-size: 18px; color: white">
-                Une erreur est survenue !<br>
-                <?php
 
-                if ($_GET['error'] == "Email")
-                    echo "L'adresse email est déjà utilisée par un autre utilisateur";
-                elseif ($_GET['error'] == "BDD")
-                    echo "La base de donnée a refusé les requêtes";
-                ?>
-            </p>
+        $message = "";
+        if ($_GET['error'] == "Email")
+            $message = "L'adresse email est déjà utilisée par un autre utilisateur";
+        elseif ($_GET['error'] == "BDD")
+            $message =  "La base de donnée a refusé les requêtes";
+        ?>
+        <div class="overlay" id="overlay">
+            <div class="subOverlay">
+                <div class="content">
+                    <p>
+                        <span style="font-weight: bold; color: red">Un problème est survenu</span><br>
+                        <?= $message ?>
+                    </p>
+                    <a href="#" onclick="closePopup()">Mince OK</a>
+                </div>
+            </div>
         </div>
-    <?php } ?>
+        <?php
+    }
+    ?>
         <form action="modifieUtilisateurPost.php?idUser=<?= $_GET['idUser'] ?>" method="POST">
             <div class="form" style="margin: 0; padding: 20px 20px;">
                 <div>
@@ -212,6 +265,23 @@ if (!empty($_GET['idUser'])) {
                     </select>
                 </div>
                 <div>
+                    <label for="desing">Nouveau design :</label>
+                    <select name="desing" id="desing">
+                        <?php
+
+                        if ($bdd->query("SELECT ancienPlanning FROM User WHERE ancienPlanning = 1 AND id = '" . $_GET['idUser'] . "'")->fetch()) {
+                            echo "<option value='1' selected>refuse les changements</option>";
+                            echo "<option value='0'>accepte les changements</option>";
+                        }
+                        else {
+                            echo "<option value='1'>refuse les changements</option>";
+                            echo "<option value='0' selected>accepte les changements</option>";
+                        }
+
+                        ?>
+                    </select>
+                </div>
+                <div>
                     <input type="submit" value="Mettre à jour">
                 </div>
             </div>
@@ -221,6 +291,12 @@ if (!empty($_GET['idUser'])) {
     ?>
 </div>
 <a class="button" style="position: absolute; left: 4%; bottom: 10%" href="../index.php?idUser=<?= $_GET['idUser'] ?>">retour</a>
+
+<script type="text/javascript">
+    function closePopup() {
+        document.getElementById("overlay").style.display = "none";
+    }
+</script>
 </body>
 </html>
 <?php } ?>

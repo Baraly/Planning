@@ -7,7 +7,7 @@ if (!isset($_SESSION['adminAccess'])){
 }
 else {
 
-?>
+    ?>
 
     <!DOCTYPE html>
     <html lang="fr">
@@ -87,7 +87,7 @@ else {
 
             <?php
 
-            if(isset($_GET['error']) or isset($_GET['succes']) or isset($_GET['supprimerPopup'])) {
+            if(isset($_GET['error']) or isset($_GET['overview']) or isset($_GET['supprimerPopup'])) {
                 ?>
             .overlay {
                 position: fixed;
@@ -205,27 +205,12 @@ else {
             <?php
         }
 
-        if (isset($_GET['succes'])) {
-            ?>
-            <div class="overlay" id="overlay">
-                <div class="subOverlay">
-                    <div class="content">
-                        <p>
-                            L'information a bien été ajoutée.
-                        </p>
-                        <a href="#" onclick="closePopup()">OK parfait !</a>
-                    </div>
-                </div>
-            </div>
-            <?php
-        }
-
         ?>
-        <div style="display: grid; grid-template-columns: 1fr 2fr">
+        <div style="display: grid; grid-template-columns: 1fr 2fr; font-size: 20px">
             <div style="border: 1px solid white; border-radius: 10px; box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.25)">
                 <div style="text-align: center">
-                    <p style="font-size: 20px">Liste des utilisateurs</p>
-                    <hr style="width: 90%">
+                    <p style="font-size: 20px; padding: 0; margin: 6px 0">Liste des utilisateurs</p>
+                    <hr style="width: 90%; padding: 0; margin: 0">
                 </div>
                 <ul>
                     <?php
@@ -257,7 +242,7 @@ else {
                     ?>
                 </ul>
             </div>
-            <div style="border: 1px solid white; border-radius: 10px; box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.25); margin-left: 30px; padding: 20px; width: 80%">
+            <div style="border: 1px solid white; border-radius: 10px; box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.25); margin-left: 30px; padding: 10px 20px; width: 80%; overflow: auto">
                 <div>
                     <?php
 
@@ -265,14 +250,7 @@ else {
 
                     ?>
                     <p>Id : <?= $idInfo ?></p>
-                    <div style="display: flex; justify-content: flex-start; align-items: flex-start; max-height: 80px">
-                        <p style="display: inline-block; margin: 0; padding: 2px 0">
-                            Message :
-                        </p>
-                        <div style="width: 80%; height: 80px; overflow: auto; padding: 2px 4px">
-                            <?= $requesteInfo['message'] ?>
-                        </div>
-                    </div>
+                    <p>Message : <a href="detailInformation.php?idInfo=<?= $idInfo ?>&overview" style="color: royalblue; background-color: white; text-decoration: none">Voir le message</a></p>
                     <p>Description : <?= $requesteInfo['description'] ?></p>
                     <p>Date de publication : <?= date('d/m/Y', strtotime($requesteInfo['dateMessage'])) ?></p>
                     <p>Date de clôture : <?php if(empty($requesteInfo['dateCloture'])) echo "Pas défini <a href='creationInformationPost.php?cloture&idInfo=$idInfo' style='background-color: royalblue; color: white; padding: 4px 8px; border-radius: 10px; text-decoration: none'>clôturer</a>"; else echo date('d/m/Y', strtotime($requesteInfo['dateMessage'])); ?></p>
@@ -293,7 +271,32 @@ else {
         </div>
 
     </div>
+
     <a class="button" style="position: absolute; left: 4%; bottom: 10%" href="../accueil.php?page=2">retour</a>
+
+    <?php
+
+    if(isset($_GET['overview'])) {
+        ?>
+        <div class="overlay" id="overlay">
+            <div class="subOverlay">
+                <div class="content" style="width: 50%; text-align: left">
+                    <p style="margin: 0; padding: 0">
+                    <div style="text-align: center">
+                        <span style="font-weight: bold; color: royalblue">-- Information --</span>
+                    </div>
+                    <hr>
+                    <?= $requesteInfo['message'] ?>
+                    </p>
+                    <div style="text-align: center">
+                        <a href="#" onclick="closePopup()">Quitter la visualisation</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+    ?>
 
     <script type="text/javascript">
         function closePopup() {
