@@ -36,7 +36,8 @@ else {
 
         while ($infoCoupure = $listeCoupure->fetch()) {
             if (getHeureEnSeconde($infoCoupure['borneDebut']) <= $tempsTravailleSeconde and getHeureEnSeconde($infoCoupure['borneFin']) >= $tempsTravailleSeconde) {
-                $bddOK &= $bdd->exec("UPDATE Horaire SET coupure = '" . $infoCoupure['temps'] . "' WHERE idHoraire = '$idHoraire'");
+                if($bdd->query("SELECT coupure FROM Horaire WHERE idHoraire = '$idHoraire' AND coupure <> '" . $infoCoupure['temps'] . "'")->fetch())
+                    $bddOK &= $bdd->exec("UPDATE Horaire SET coupure = '" . $infoCoupure['temps'] . "' WHERE idHoraire = '$idHoraire'");
             }
         }
     }

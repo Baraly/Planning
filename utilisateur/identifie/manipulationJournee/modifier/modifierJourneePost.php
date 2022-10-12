@@ -27,13 +27,14 @@ if($_POST['coupure'] == 'automatique') {
 
     while ($infoCoupure = $listeCoupure->fetch()) {
         if (getHeureEnSeconde($infoCoupure['borneDebut']) <= $tempsTravailleSeconde and getHeureEnSeconde($infoCoupure['borneFin']) >= $tempsTravailleSeconde) {
-            $bddOK &= $bdd->exec("UPDATE Horaire SET coupure = '" . $infoCoupure['temps'] . "' WHERE idHoraire = '$idHoraire'");
+            if($bdd->query("SELECT coupure FROM Horaire WHERE idHoraire = '$idHoraire' AND coupure <> '" . $infoCoupure['temps'] . "'")->fetch())
+                $bddOK &= $bdd->exec("UPDATE Horaire SET coupure = '" . $infoCoupure['temps'] . "' WHERE idHoraire = '$idHoraire'");
         }
     }
 }
-
-if($bdd->query("SELECT idHoraire FROM Horaire WHERE idHoraire = '$idHoraire' AND coupure <> '" . $_POST['coupure'] . "'")->fetch() and $_POST['coupure'] != 'automatique')
+elseif($bdd->query("SELECT idHoraire FROM Horaire WHERE idHoraire = '$idHoraire' AND coupure <> '" . $_POST['coupure'] . "'")->fetch())
     $bddOK &= $bdd->exec("UPDATE Horaire SET coupure = '" . $_POST['coupure'] . "' WHERE idHoraire = '$idHoraire'");
+
 
 if($bdd->query("SELECT idHoraire FROM Horaire WHERE idHoraire = '$idHoraire' AND decouchage <> '" . $_POST['decouche'] . "'")->fetch())
     $bddOK &= $bdd->exec("UPDATE Horaire SET decouchage = '" . $_POST['decouche'] . "' WHERE idHoraire = '$idHoraire'");
