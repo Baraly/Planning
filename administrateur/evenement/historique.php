@@ -194,7 +194,7 @@ else {
                         }
 
                         if ($rien) {
-                            echo "<p>Aucune donnée de requête</p>";
+                            echo "<p>Aucune donnée d'évènement</p>";
                         }
 
                         ?>

@@ -326,7 +326,7 @@ else {
                 <ul>
                     <?php
 
-                    $requete = $bdd->query("SELECT * FROM Evenement ORDER BY dateEvenement DESC");
+                    $requete = $bdd->query("SELECT * FROM Evenement WHERE connaissance IS NULL ORDER BY dateEvenement DESC");
 
                     $rien = true;
 

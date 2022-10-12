@@ -147,7 +147,7 @@ else {
                         <label for="hd" style="text-align: right; margin-right: 20px">Heure de début :</label>
                     </div>
                     <div style="text-align: left">
-                        <input id="hd" type="time" name="hDebut" required value="<?= $infoJournee['hDebut'] ?>">
+                        <input id="hd" type="time" name="hDebut" required value="<?= date('H:i', strtotime($infoJournee['hDebut'])) ?>">
                     </div>
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr">
@@ -155,7 +155,7 @@ else {
                         <label for="hf" style="text-align: right; margin-right: 20px">Heure de fin :</label>
                     </div>
                     <div style="text-align: left">
-                        <input id="hf" type="time" name="hFin" required value="<?= $infoJournee['hFin'] ?>">
+                        <input id="hf" type="time" name="hFin" required value="<?php if(!empty($infoJournee['hFin'])) echo date('H:i', strtotime($infoJournee['hFin'])); else echo '00:00'; ?>">
                     </div>
                 </div>
                 <?php
@@ -204,7 +204,7 @@ else {
                             <label for="pause" style="text-align: right; margin-right: 20px">Pause :</label>
                         </div>
                         <div  style="text-align: left">
-                            <input id="pause" type="time" name="coupure" required value="<?= $infoJournee['coupure'] ?>">
+                            <input id="pause" type="time" name="coupure" required value="<?= date('H:i', strtotime($infoJournee['coupure'])) ?>">
                         </div>
                     </div>
                     <?php

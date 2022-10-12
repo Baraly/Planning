@@ -225,7 +225,7 @@ else {
                                 <label for="hDebut">Heure de début :</label>
                             </div>
                             <div style="text-align: left">
-                                <input type="time" name="hDebut" id="hDebut" required value="<?= $infoJournee['hDebut'] ?>">
+                                <input type="time" name="hDebut" id="hDebut" required value="<?= date('H:i', strtotime($infoJournee['hDebut'])) ?>">
                             </div>
                         </div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 6px">
@@ -233,7 +233,7 @@ else {
                                 <label for="hFin">Heure de fin :</label>
                             </div>
                             <div style="text-align: left">
-                                <input type="time" name="hFin" id="hFin" required value="<?= $infoJournee['hFin'] ?>">
+                                <input type="time" name="hFin" id="hFin" required value="<?php if(!empty($infoJournee['hFin'])) echo date('H:i', strtotime($infoJournee['hFin'])); ?>">
                             </div>
                         </div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 6px">
@@ -372,7 +372,10 @@ else {
                         while ($jour = $listeJournees->fetch()) {
                             $rien = false;
 
-                            echo "<li><a href='modifier.php?idUser=" . $idUser . "&idHoraire=" . $jour['idHoraire'] . "'><p>N° " . $jour['idHoraire'] . "</p><p>" . date('d/m/Y', strtotime($jour['datage'])) . "</p><p>" . date('H:i', strtotime($jour['hDebut'])) . " - " . date('H:i', strtotime($jour['hFin'])) . "</p><p>" . date('H', strtotime($jour['coupure'])) . "h" . date('i', strtotime($jour['coupure'])) . "</p></a></li>";
+                            if(empty($jour['hFin']))
+                                echo "<li><a href='modifier.php?idUser=" . $idUser . "&idHoraire=" . $jour['idHoraire'] . "'><p>N° " . $jour['idHoraire'] . "</p><p>" . date('d/m/Y', strtotime($jour['datage'])) . "</p><p>" . date('H:i', strtotime($jour['hDebut'])) . " - /</p><p>/</p></a></li>";
+                            else
+                                echo "<li><a href='modifier.php?idUser=" . $idUser . "&idHoraire=" . $jour['idHoraire'] . "'><p>N° " . $jour['idHoraire'] . "</p><p>" . date('d/m/Y', strtotime($jour['datage'])) . "</p><p>" . date('H:i', strtotime($jour['hDebut'])) . " - " . date('H:i', strtotime($jour['hFin'])) . "</p><p>" . date('H', strtotime($jour['coupure'])) . "h" . date('i', strtotime($jour['coupure'])) . "</p></a></li>";
                         }
 
                         if($rien)
