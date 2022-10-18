@@ -123,6 +123,7 @@ CREATE TABLE Requete (
   type VARCHAR(50) NOT NULL,
   dateOuverture DATE NOT NULL,
   dateCloture DATE DEFAULT NULL,
+  messageAdmin TEXT DEFAULT NULL,
   FOREIGN KEY (idUser) REFERENCES User(id)
 );
 
@@ -141,7 +142,8 @@ CREATE TABLE Paiement (
     idUser INT NOT NULL,
     montant INT DEFAULT 0,
     datePaiement DATETIME NOT NULL DEFAULT current_timestamp(),
+    dateDebutAbonnement DATE NOT NULL,
     dureeMois INT NOT NULL DEFAULT 12,
-    etat VARCHAR(20) NOT NULL CHECK (etat IN ('EXECUTE', 'EN ATTENTE', 'EXONERATION')),
+    etat VARCHAR(20) NOT NULL CHECK (etat IN ('EXECUTE_AUTO', 'EXECUTE_MANUEL', 'EN ATTENTE', 'EXONERATION')),
     FOREIGN KEY (idUser) REFERENCES User(id)
 );
