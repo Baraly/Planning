@@ -1,7 +1,7 @@
 <?php
 
-$bdd = null;
-include_once '../../function/bdd.php';
+$bdd = new PDO('mysql:host=91.234.194.113;dbname=cp1699398p07_planning;charset=utf8','cp1699398p07_admin','sh)q.sz1j7Ry');
+
 include_once '../../function/fonctionMois.php';
 include_once '../../function/fonctionHeures.php';
 
