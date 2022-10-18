@@ -16,7 +16,7 @@
         label {
             font-size: 26px;
         }
-        input[type='tel'] {
+        input[type='text'] {
             padding: 4px 8px;
             font-size: 26px;
             border: 1px solid black;
@@ -38,13 +38,10 @@
 
     session_start();
 
-    require '../PHPMailer/src/Exception.php';
-    require '../PHPMailer/src/PHPMailer.php';
-    require '../PHPMailer/src/SMTP.php';
-    include_once '../function/mail.php';
-
-        if (!empty($_POST['codeAdmin']) and !empty($_SESSION['codeAdmin'])) {
-            if ($_POST['codeAdmin'] == $_SESSION['codeAdmin']) {
+        if (isset($_SESSION['codeAdmin']) and $_SESSION['codeAdmin'])
+            header("location: accueil.php");
+        elseif (!empty($_POST['codeAdmin'])) {
+            if ($_POST['codeAdmin'] == "b3abbaad57a231464cc2ef045f084d2def3ba4169471c1787aebf210a61aa4eed7b9ec7e2829e2e4a924de2b6cbfe98906616fd7b38c7b64ae3795d1f6fdde3679a7c72c471fabd6377d552d9222d3b6") {
                 $_SESSION['adminAccess'] = true;
                 if (!empty($_GET['url']))
                     header("location: " . $_GET['url']);
@@ -52,52 +49,7 @@
                     header("location: accueil.php");
             }
             else
-                header("location: accueil.php");
-        }
-        else {
-            $code = rand(100000000000000, 999999999999999);
-
-            $_SESSION['codeAdmin'] = $code;
-
-            $messageMail = '
-                <html>
-                <head>
-                    <style>
-                        body {
-                            margin: 10px 10px;
-                        }
-                        div {
-                            text-align: center;
-                        }
-                        span {
-                            padding: 10px 20px;
-                            font-weight: bold;
-                            border: 1px solid rgba(0, 0, 0, 0.25);
-                            background-color: rgba(0, 0, 0, 0.1);
-                            border-radius: 10px;
-                            margin-top: 10px; 
-                            text-decoration: none;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <h2>Bonjour Baptiste,</h2>
-                    <div>
-                        <p>
-                            Veuillez trouver ci-joint votre code d\'accès à votre espace administrateur : 
-                        </p>
-                        <span> ' . $code . '</span> 
-                    </div>
-                    <p>Bien cordialement, <br>Le service informatique</p>
-                </body>
-                </html>
-            ';
-
-            //echo "<h1>Le code est : " . $code . "</h1>";
-
-            if(!EnvoyerMail("baptiste.bronsin@outlook.com", "Bronsin", "Baptiste", "Connexion administrateur", $messageMail)) {
-                echo "<h1>Une erreur est survenue lors de l'envoie du mail !</h1>";
-            }
+                header("location: index.php");
         }
     ?>
 
@@ -115,7 +67,7 @@
     }
     ?>
         <label for="code">Code d'accès : </label>
-        <input id="code" type="tel" name="codeAdmin">
+        <input id="code" type="text" name="codeAdmin" value="<?php if(!empty($_GET['codeAdmin'])) echo $_GET['codeAdmin']; ?>">
         <input type="submit" value="Me connecter">
     </form>
 </div>
