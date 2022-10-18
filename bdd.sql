@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS Paiement;
+DROP TABLE IF EXISTS MessageRequete;
 DROP TABLE IF EXISTS Requete;
 DROP TABLE IF EXISTS Pause;
 DROP TABLE IF EXISTS LuMessageInfo;
@@ -119,8 +121,27 @@ CREATE TABLE Requete (
   id INT NOT NULL PRIMARY KEY auto_increment,
   idUser INT NOT NULL,
   type VARCHAR(50) NOT NULL,
-  message TEXT NOT NULL,
-  dateReception DATE NOT NULL,
-  dateTraitement DATE DEFAULT NULL,
+  dateOuverture DATE NOT NULL,
+  dateCloture DATE DEFAULT NULL,
   FOREIGN KEY (idUser) REFERENCES User(id)
+);
+
+CREATE TABLE MessageRequete (
+    id INT NOT NULL PRIMARY KEY auto_increment,
+    idUser INT,
+    idRequete INT NOT NULL,
+    dateEnvoie DATETIME NOT NULL DEFAULT current_timestamp(),
+    message TEXT NOT NULL,
+    FOREIGN KEY (idUser) REFERENCES User(id),
+    FOREIGN KEY (idRequete) REFERENCES Requete(id)
+);
+
+CREATE TABLE Paiement (
+    id INT NOT NULL PRIMARY KEY auto_increment,
+    idUser INT NOT NULL,
+    montant INT DEFAULT 0,
+    datePaiement DATETIME NOT NULL DEFAULT current_timestamp(),
+    dureeMois INT NOT NULL DEFAULT 12,
+    etat VARCHAR(20) NOT NULL CHECK (etat IN ('EXECUTE', 'EN ATTENTE', 'EXONERATION')),
+    FOREIGN KEY (idUser) REFERENCES User(id)
 );
