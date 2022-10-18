@@ -298,14 +298,14 @@ else {
                 <ul>
                     <?php
 
-                    $requete = $bdd->query("SELECT Requete.id AS id, nom, prenom, User.id AS ID FROM Requete, User WHERE Requete.idUser = User.id AND dateTraitement IS NULL");
+                    $requete = $bdd->query("SELECT R1.id AS idR, nom, prenom, U1.id AS idU1 FROM Requete AS R1, User AS U1 WHERE idUser = U1.id AND dateCloture IS NULL AND U1.id IN ( SELECT idUser FROM MessageRequete WHERE dateEnvoie = ( SELECT MAX(dateEnvoie) FROM MessageRequete WHERE idRequete = R1.id ) AND idRequete = R1.id )");
 
                     $rien = true;
 
                     while ($donnees = $requete->fetch()) {
                         $rien = false;
 
-                        echo "<li><p><a href='utilisateur/requete/infoRequete.php?idUser=" . $donnees['ID'] . "&idRequete=" . $donnees['id'] . "' style='margin: 0; padding: 0; color: black; text-decoration: none'>N°" . $donnees['id'] . " " . strtoupper($donnees['nom']) . " " . strtoupper($donnees['prenom'])[0] . ".</a></p></li>";
+                        echo "<li><p><a href='utilisateur/requete/infoRequete.php?idUser=" . $donnees['idU1'] . "&idRequete=" . $donnees['idR'] . "' style='margin: 0; padding: 0; color: black; text-decoration: none'>N°" . $donnees['idR'] . " " . strtoupper($donnees['nom']) . " " . strtoupper($donnees['prenom'])[0] . ".</a></p></li>";
                     }
 
                     if ($rien) {

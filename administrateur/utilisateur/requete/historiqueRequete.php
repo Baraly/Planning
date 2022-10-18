@@ -12,7 +12,7 @@ else {
     <html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>Title</title>
+        <title>Historique des requêtes</title>
         <style>
             @font-face {
                 font-family: myFirstFont;
@@ -142,7 +142,7 @@ else {
 
                     $nonTraite = false;
 
-                    $userRequest = $bdd->query("SELECT * FROM Requete WHERE idUser = '" . $_GET['idUser'] . "' AND dateTraitement IS NULL ORDER BY dateReception DESC");
+                    $userRequest = $bdd->query("SELECT * FROM Requete WHERE idUser = '" . $_GET['idUser'] . "' AND dateCloture IS NULL ORDER BY dateOuverture DESC");
 
                     while ($donnees = $userRequest->fetch()) {
                         if ($rien) {
@@ -150,14 +150,14 @@ else {
                         }
                         $rien = false;
                         $nonTraite = true;
-                        echo "<li><p style='position: absolute; left: 20px; display: inline-block'><a href='infoRequete.php?idUser=" . $_GET['idUser'] . "&idRequete=" . $donnees['id'] . "' style='margin: 0; padding: 0; color: black; text-decoration: none'>" . date('d', strtotime($donnees['dateReception'])) . "/" . date('m', strtotime($donnees['dateReception'])) . "/" . date('Y', strtotime($donnees['dateReception'])) . "</a></p><p style='position: absolute; right: 20px; display: inline-block'>" . $donnees['type'] . "</p></li>";
+                        echo "<li><p style='position: absolute; left: 20px; display: inline-block'><a href='infoRequete.php?idUser=" . $_GET['idUser'] . "&idRequete=" . $donnees['id'] . "' style='margin: 0; padding: 0; color: black; text-decoration: none'>N° " . $donnees['id'] . " - " . date('d/m/Y', strtotime($donnees['dateOuverture'])) . "</a></p></li>";
                     }
 
                     if ($nonTraite) {
                         echo "<hr style='margin: 6px 10px'>";
                     }
 
-                    $userRequest = $bdd->query("SELECT * FROM Requete WHERE idUser = '" . $_GET['idUser'] . "' AND dateTraitement IS NOT NULL ORDER BY dateReception DESC");
+                    $userRequest = $bdd->query("SELECT * FROM Requete WHERE idUser = '" . $_GET['idUser'] . "' AND dateCloture IS NOT NULL ORDER BY dateOuverture DESC");
 
                     $traite = false;
 
@@ -167,7 +167,7 @@ else {
                         }
                         $traite = true;
                         $rien = false;
-                        echo "<li><p style='position: absolute; left: 20px; display: inline-block'><a href='infoRequete.php?idUser=" . $_GET['idUser'] . "&idRequete=" . $donnees['id'] . "' style='margin: 0; padding: 0; color: black; text-decoration: none'>" . date('d', strtotime($donnees['dateReception'])) . "/" . date('m', strtotime($donnees['dateReception'])) . "/" . date('Y', strtotime($donnees['dateReception'])) . "</a></p><p style='position: absolute; right: 20px; display: inline-block'>" . $donnees['type'] . "</p></li>";
+                        echo "<li><p style='position: absolute; left: 20px; display: inline-block'><a href='infoRequete.php?idUser=" . $_GET['idUser'] . "&idRequete=" . $donnees['id'] . "' style='margin: 0; padding: 0; color: black; text-decoration: none'>N° " . $donnees['id'] . " - " . date('d/m/Y', strtotime($donnees['dateOuverture'])) . "</a></p></li>";
                     }
 
 

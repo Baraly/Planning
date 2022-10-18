@@ -266,7 +266,8 @@ if (!empty($_GET['idUser'])) {
         <ul>
             <?php
 
-            $requete = $bdd->query("SELECT dateReception, dateTraitement, id FROM Requete WHERE idUser = '" . $_GET['idUser'] . "' ORDER BY dateReception DESC LIMIT 20");
+            //$requete = $bdd->query("SELECT dateReception, dateTraitement, id FROM Requete WHERE idUser = '" . $_GET['idUser'] . "' ORDER BY dateReception DESC LIMIT 20");
+            $requete = $bdd->query("SELECT dateOuverture, dateCloture, id FROM Requete WHERE idUser = '" . $_GET['idUser'] . "' ORDER BY dateOuverture DESC LIMIT 20");
 
             $rien = true;
 
@@ -275,12 +276,12 @@ if (!empty($_GET['idUser'])) {
 
                 $etat = "";
 
-                if ($donnees['dateTraitement'])
+                if ($donnees['dateCloture'])
                     $etat .= "<span style='position: absolute; right: 10px; color: #8CCD75'>traitée</span>";
                 else
                     $etat .= "<span style='position: absolute; right: 10px; color: #EF5050'>à traiter</span>";
 
-                echo "<li style='position: relative; text-align: left'><p><a href='requete/infoRequete.php?idUser=" . $_GET['idUser'] . "&idRequete=" . $donnees['id'] . "' style='margin: 0; padding: 0; color: black; text-decoration: none'>" . date('d', strtotime($donnees['dateReception'])) . "/" . date('m', strtotime($donnees['dateReception'])) . "/" . date('Y', strtotime($donnees['dateReception'])) . "</a></p>" . $etat . "</li>";
+                echo "<li style='position: relative; text-align: left'><p><a href='requete/infoRequete.php?idUser=" . $_GET['idUser'] . "&idRequete=" . $donnees['id'] . "' style='margin: 0; padding: 0; color: black; text-decoration: none'>" . date('d/m/Y', strtotime($donnees['dateOuverture'])) . "</a></p>" . $etat . "</li>";
             }
 
             if ($rien)

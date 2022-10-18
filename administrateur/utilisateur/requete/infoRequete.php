@@ -30,6 +30,8 @@ else {
                 top: 120px;
                 bottom: 5%;
                 font-size: 22px;
+                display: grid;
+                grid-template-columns: 1fr 2fr;
             }
 
             .name {
@@ -46,15 +48,12 @@ else {
             }
 
             .info {
-                position: absolute;
+                display: grid;
+                grid-template-rows: auto 50px;
+                height: 80%;
                 border: 1px solid black;
-                right: 340px;
-                left: 300px;
-                top: 0;
-                bottom: 100px;
                 text-align: center;
                 border-radius: 10px;
-                overflow: auto;
             }
 
             .info p {
@@ -64,18 +63,40 @@ else {
             }
 
             ul {
-                margin: 0 0;
-                padding: 0 0;
-                position: absolute;
-                top: 4px;
-                bottom: 0;
-                right: 0;
-                left: 0;
+                margin: 10px;
+                padding: 10px;
+                overflow: auto;
+                border-radius: 10px;
+                font-size: 18px;
             }
 
             li {
-                /*list-style-type: none;*/
-                margin: 4px 0;
+                padding: 0;
+                position: relative;
+                list-style-type: none;
+                width: 100%;
+                margin: 0 0 10px;
+            }
+
+            .divUser {
+                position: absolute;
+                background-color: #E5E8E8;
+                border-radius: 10px;
+                padding: 4px 8px;
+                left: 10px;
+                right: 50%;
+                z-index: 2;
+            }
+
+            .divAdmin {
+                position: absolute;
+                background-color: royalblue;
+                color: white;
+                border-radius: 10px;
+                padding: 4px 8px;
+                right: 10px;
+                left: 50%;
+                z-index: 2;
             }
 
             li > p {
@@ -94,20 +115,16 @@ else {
                 padding: 4px 20px;
             }
 
-            form {
-                margin-top: 80px;
-            }
-
             textarea {
                 font-family: myFirstFont;
                 font-size: 20px;
                 padding: 10px;
-                width: 80%;
-                height: 100px;
+                width: 60%;
+                height: 20px;
             }
 
             input[type="submit"] {
-                margin: 20px 80px;
+                margin: 0;
                 background-color: royalblue;
                 color: white;
                 border-radius: 8px;
@@ -116,6 +133,11 @@ else {
                 padding: 4px 8px;
                 cursor: pointer;
                 font-size: 22px;
+                display: inline-block;
+                left: 50%;
+                top: 50%;
+                -ms-transform: translateY(-50%);
+                transform: translateY(-50%);
             }
         </style>
     </head>
@@ -149,63 +171,144 @@ else {
 
     <div class="interface">
 
-        <div class="name">
-            <p style="margin-bottom: 8px">Nom : <?= strtoupper($userInfo['nom']) ?></p>
-            <p>Prénom : <?= $userInfo['prenom'] ?></p>
-        </div>
+        <div>
 
-        <div class="info">
-            <div>
-                <?php
+            <div style="margin: 0; padding: 0">
+                <div class="name">
+                    <p style="margin-bottom: 8px">Nom : <?= strtoupper($userInfo['nom']) ?></p>
+                    <p>Prénom : <?= $userInfo['prenom'] ?></p>
+                </div>
+            </div>
 
-                $infoRequete = $bdd->query("SELECT * FROM Requete WHERE id = '" . $_GET['idRequete'] . "'")->fetch();
-
-                ?>
-                <p>Type : <?= $infoRequete['type'] ?></p>
-                <p>Date de réception : <?= date('d', strtotime($infoRequete['dateReception'])) ?>/<?= date('m', strtotime($infoRequete['dateReception'])) ?>/<?= date('Y', strtotime($infoRequete['dateReception'])) ?></p>
-                <p>
-                    État :
+            <div style="margin: 20px 0; padding: 0">
+                <div class="name">
                     <?php
 
-                    if($infoRequete['dateTraitement']) {
-                        echo "<span style='color: #8CCD75'>traitée</span> (le " . date('d', strtotime($infoRequete['dateTraitement'])) ?>/<?= date('m', strtotime($infoRequete['dateTraitement'])) ?>/<?= date('Y', strtotime($infoRequete['dateTraitement'])) . ")";
-                    }
-                    else
-                        echo "<span style='color: #EF5050'>à traiter</span>";
+                    $infoRequete = $bdd->query("SELECT * FROM Requete WHERE id = '" . $_GET['idRequete'] . "'")->fetch();
 
                     ?>
-                </p>
-                <div style="display: grid; grid-template-columns: 110px auto; margin: 10px 20px;"><p style="display: inline-block; margin: 0">Message : </p><p style="display: inline-block; text-align: left; margin: 0;"><?= $infoRequete['message'] ?></p></div>
-                <?php
-
-                if(!$infoRequete['dateTraitement']) {
-                    ?>
-                    <form action="requetePost.php?idRequete=<?= $_GET['idRequete'] ?>" method="POST">
+                    <p>Type : <?= $infoRequete['type'] ?></p>
+                    <p>Date d'ouverture : <?= date('d', strtotime($infoRequete['dateOuverture'])) ?>/<?= date('m', strtotime($infoRequete['dateOuverture'])) ?>/<?= date('Y', strtotime($infoRequete['dateOuverture'])) ?></p>
+                    <p>
+                        État :
                         <?php
 
-                        $message = "Bonjour ";
-                        $listeGenre = [['M', 'Monsieur'], ['Mr', 'Monsieur'], ['Mlle', 'Mademoiselle'], ['Mme', 'Madame']];
-
-                        foreach ($listeGenre as $genre) {
-                            if ($genre[0] == $userInfo['genre'])
-                                $message .= $genre[1] . " ";
+                        if($infoRequete['dateCloture']) {
+                            echo "<span style='color: #8CCD75'>cloturé</span> (le " . date('d', strtotime($infoRequete['dateCloture'])) ?>/<?= date('m', strtotime($infoRequete['dateCloture'])) ?>/<?= date('Y', strtotime($infoRequete['dateCloture'])) . ")";
                         }
-
-                        $message .= $userInfo['nom'] . ", \n\n";
+                        else
+                            echo "<span style='color: #EF5050'>à traiter</span>";
 
                         ?>
-                        <textarea name="message" required><?= $message ?></textarea><br>
-                        <input type="submit" value="Envoyer">
+                    </p>
+                    <?php
+
+                    if (!$infoRequete['dateCloture'])
+                        echo "<p style='margin-top: 10px; text-align: center'><a style='display: inline-block; text-decoration: none; color: royalblue' href='requetePost.php?idRequete=". $_GET['idRequete'] ."&cloturer'>Clôturer la requête</a></p>";
+                    ?>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="position: relative">
+            <div class="info" style="position: absolute; top: 0; bottom: 10%; right: 0; left: 0">
+                <ul>
+                    <?php
+
+                    $listeMessages = $bdd->query("SELECT * FROM MessageRequete WHERE idRequete = '" . $_GET['idRequete'] . "' ORDER BY dateEnvoie");
+
+                    $rien = true;
+
+                    while ($message = $listeMessages->fetch()) {
+                        $rien = false;
+                        ?>
+                        <li>
+                            <?php
+
+                            // réponse administrateur
+                            if (!$message['idUser']) {
+                                ?>
+                                <div class="divAdmin">
+                                    <p style="margin: 0; padding: 0; color: #85C1E9">
+                                        <?= date('d/m/Y', strtotime($message['dateEnvoie'])) ?>
+                                        à
+                                        <?= date('H:i', strtotime($message['dateEnvoie'])) ?>
+                                    </p>
+                                    <p style="margin: 0; padding: 0">
+                                        <?= $message['message'] ?>
+                                    </p>
+                                </div>
+                                <div class="divAdmin" style="position: relative; color: white; background-color: white; z-index: 0; width: 40%">
+                                    <p style="margin: 0; padding: 0; color: white">
+                                        <?= date('d/m/Y', strtotime($message['dateEnvoie'])) ?>
+                                        à
+                                        <?= date('H:i', strtotime($message['dateEnvoie'])) ?>
+                                    </p>
+                                    <p style="margin: 0; padding: 0">
+                                        <?= $message['message'] ?>
+                                    </p>
+                                </div>
+                                <?php
+                                //echo "<p style='padding: 0; color: white; width: 40%; margin: 10px 0'> " . $message['message'] . "</p>";
+                            }
+                            // réponse utilisateur
+                            else {
+                                ?>
+                                <div class="divUser">
+                                    <p style="margin: 0; padding: 0; color: #7F8C8D">
+                                        <?= date('d/m/Y', strtotime($message['dateEnvoie'])) ?>
+                                        à
+                                        <?= date('H:i', strtotime($message['dateEnvoie'])) ?>
+                                    </p>
+                                    <p style="margin: 0; padding: 0">
+                                        <?= $message['message'] ?>
+                                    </p>
+                                </div>
+                                <div class="divUser" style="position: relative; color: white; background-color: white; z-index: 0; width: 40%">
+                                    <p style="margin: 0; padding: 0; color: white">
+                                        <?= date('d/m/Y', strtotime($message['dateEnvoie'])) ?>
+                                        à
+                                        <?= date('H:i', strtotime($message['dateEnvoie'])) ?>
+                                    </p>
+                                    <p style="margin: 0; padding: 0">
+                                        <?= $message['message'] ?>
+                                    </p>
+                                </div>
+                                <?php
+                                //echo "<p style='padding: 0; color: white; width: 40%; margin: 10px 0'> " . $message['message'] . "</p>";
+                            }
+                            ?>
+                        </li>
+                        <?php
+                    }
+
+                    if($rien) {
+                        echo "<li style='text-align: center'><p>La conversation a été supprimée</p></li>";
+                    }
+
+                    if ($infoRequete['dateCloture'] and !$rien)
+                        echo "<li><p style='text-align: center; margin-top: 20px'>La requête a été clôturée</p></li>";
+                    ?>
+                </ul>
+                <?php
+
+                if (!$infoRequete['dateCloture']){
+                    ?>
+                    <form action="requetePost.php?idRequete=<?= $_GET['idRequete'] ?>" method="POST">
+                        <textarea name="message"></textarea>
+                        <input type="submit" value="répondre">
                     </form>
                     <?php
                 }
+
 
                 ?>
             </div>
         </div>
 
-        <?php } ?>
     </div>
+    <?php } ?>
     <a class="button" style="position: absolute; left: 4%; bottom: 10%" href="../index.php?idUser=<?= $_GET['idUser'] ?>">retour</a>
     </body>
     </html>
