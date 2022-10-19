@@ -113,6 +113,53 @@ else {
                     text-decoration: none;
                     padding: 4px 20px;
                 }
+
+                <?php
+
+        if(isset($_GET['error']) or isset($_GET['succes'])) {
+            ?>
+                .overlay {
+                    position: fixed;
+                    top: 0;
+                    bottom: 0;
+                    right: 0;
+                    left: 0;
+                    background-color: rgba(39, 55, 70, 0.9);
+                    z-index: 20;
+                }
+                .subOverlay {
+                    position: relative;
+                    height: 100%;
+                    width: 100%;
+                    text-align: center;
+                }
+                .overlay .content {
+                    width: 60%;
+                    position: fixed;
+                    z-index: 21;
+                    border-radius: 20px;
+                    padding: 20px 12px;
+                    background-color: white;
+                    display: inline-block;
+                    left: 50%;
+                    top: 50%;
+                    -ms-transform: translate(-50%, -50%);
+                    transform: translate(-50%, -50%);
+                    font-size: 26px;
+                }
+
+                .overlay .content a {
+                    display: inline-block;
+                    background-color: #212F3D;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 14px;
+                    padding: 5px 40px;
+                }
+                <?php
+            }
+
+            ?>
             </style>
         </head>
     <body>
@@ -162,7 +209,7 @@ else {
                 <div class="subOverlay">
                     <div class="content">
                         <p>
-                            Le paiement a été ajoutée avec succès !
+                            Le paiement a été ajouté avec succès !
                             <br>
                             L'abonnement commencera à partir du <?= date('d/m/Y', strtotime($_GET['dateDebutAbonnement'])) ?>.
                         </p>

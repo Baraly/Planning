@@ -174,10 +174,10 @@ else {
                                     $etat = "<span style='color: #2ECC71'>exécuté</span>";
                                 elseif($donnees['etat'] == "EN ATTENTE")
                                     $etat = "<span style='color: #D35400'>en attente</span>";
-                                elseif($donnees['EXONERATION'])
+                                elseif($donnees['etat'] == "EXONERATION")
                                     $etat = "<span style='color: #9B59B6'>exonéré</span>";
 
-                                echo "<li><a href='detailPaiement.php?idPaiement=" . $donnees['id'] . "'><p style='position: absolute; left: 20px; display: inline-block'>" . date('d/m/Y', strtotime($donnees['datePaiement'])) . " : " . $donnees['montant'] . " -> " . $donnees['dureeMois'] . " mois</p><p style='position: absolute; right: 20px; display: inline-block'>" . $etat . "</p></a></li>";
+                                echo "<li><a href='detailPaiement.php?idPaiement=" . $donnees['id'] . "'><p style='position: absolute; left: 20px; display: inline-block'>" . $donnees['montant'] . "€ : " . date('d/m/Y', strtotime($donnees['dateDebutAbonnement'])) . " -> " . date('d/m/Y', strtotime($donnees['dateFinAbonnement'])) . " </p><p style='position: absolute; right: 20px; display: inline-block'>" . $etat . "</p></a></li>";
 
                             }
 
