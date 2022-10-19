@@ -336,12 +336,7 @@ if (!empty($_GET['idUser'])) {
         </div>
         <div style="margin: 0; display: flex; flex-direction: column; justify-content: space-between">
             <div style="text-align: center; margin: 0; padding: 0">
-                <?php
-                if($userInfo['verifie'])
-                    echo "<a href='index.php?idUser=" . $_GET['idUser'] . "&popup=modifierCode' class='button'>modifier le code</a>";
-                else
-                    echo "<a href='#' style='color: rgba(65, 105, 225, 0.4)' class='button'>modifier le code</a>";
-                ?>
+                <a href="paiement/historiquePaiement.php?idUser=<?= $_GET['idUser'] ?>" class="button">paiements</a>
             </div>
             <div style="text-align: center; margin: 0; padding: 0">
                 <?php
@@ -382,7 +377,12 @@ if (!empty($_GET['idUser'])) {
                 ?>
             </div>
             <div style="text-align: center; margin: 0; padding: 0">
-                <a class="button" style="color: white">désactiver</a>
+                <?php
+                if($userInfo['verifie'])
+                    echo "<a href='index.php?idUser=" . $_GET['idUser'] . "&popup=modifierCode' class='button'>modifier le code</a>";
+                else
+                    echo "<a href='#' style='color: rgba(65, 105, 225, 0.4)' class='button'>modifier le code</a>";
+                ?>
             </div>
         </div>
         <div></div>

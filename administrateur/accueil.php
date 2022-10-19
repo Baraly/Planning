@@ -158,17 +158,24 @@ else {
                 <a href="information/creationInformation.php">AJOUTER</a>
             </div>
         </div>
-        <div class="etiquette" style="grid-column: 3/5; grid-row: 1/2">
+        <div class="etiquette" style="grid-column: 3/5; grid-row: 1/2; grid-template-rows: 44px auto 2px">
             <div style="margin: 0 10px; padding: 0; font-size: 24px;">
-                <p class="title">Liste de ...</p>
+                <p class="title">Liste des Paiements</p>
                 <hr>
             </div>
             <div class="listInfos">
+                <ul>
+                    <?php
 
+                    $listePaiements = $bdd->query("SELECT nom, prenom, Paiement.id AS idPaiement, montant FROM Paiement JOIN User ON User.id = Paiement.idUser WHERE montant <> 0 ORDER BY dateDebutAbonnement DESC LIMIT 30");
+
+                    while ($donnees = $listePaiements->fetch()) {
+                        echo "<li><a href='utilisateur/paiement/detailPaiement.php?idPaiement=" . $donnees['idPaiement'] . "&from=accueil'>" . strtoupper($donnees['nom']) . " " . $donnees['prenom'][0] . ".<span style='position: absolute; right: 0'>" . $donnees['montant'] . "€</span></a></li>";
+                    }
+                    ?>
+                </ul>
             </div>
-            <div class="button">
-                <a href="#">AJOUTER</a>
-            </div>
+            <div></div>
         </div>
         <div class="etiquette" style="grid-column: 5/7; grid-row: 1/2; grid-template-rows: 44px auto 2px">
             <div style="margin: 0 10px; padding: 0; font-size: 24px;">

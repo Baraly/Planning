@@ -54,7 +54,7 @@ else {
                 .info {
                     position: absolute;
                     border: 1px solid black;
-                    right: 300px;
+                    right: 260px;
                     left: 360px;
                     top: 0;
                     bottom: 150px;
@@ -110,6 +110,52 @@ else {
                     padding: 4px 20px;
                 }
 
+                <?php
+
+        if(isset($_GET['error']) or isset($_GET['succes'])) {
+            ?>
+                .overlay {
+                    position: fixed;
+                    top: 0;
+                    bottom: 0;
+                    right: 0;
+                    left: 0;
+                    background-color: rgba(39, 55, 70, 0.9);
+                    z-index: 20;
+                }
+                .subOverlay {
+                    position: relative;
+                    height: 100%;
+                    width: 100%;
+                    text-align: center;
+                }
+                .overlay .content {
+                    width: 60%;
+                    position: fixed;
+                    z-index: 21;
+                    border-radius: 20px;
+                    padding: 20px 12px;
+                    background-color: white;
+                    display: inline-block;
+                    left: 50%;
+                    top: 50%;
+                    -ms-transform: translate(-50%, -50%);
+                    transform: translate(-50%, -50%);
+                    font-size: 26px;
+                }
+
+                .overlay .content a {
+                    display: inline-block;
+                    background-color: #212F3D;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 14px;
+                    padding: 5px 40px;
+                }
+                <?php
+            }
+
+            ?>
             </style>
         </head>
         <body>
@@ -136,6 +182,25 @@ else {
 
         if (!empty($_GET['idUser'])) {
 
+            if (isset($_GET['error'])) {
+                ?>
+                <div class="overlay" id="overlay">
+                    <div class="subOverlay">
+                        <div class="content">
+                            <p>
+                                <span style="font-weight: bold; color: red">Un problème est survenu</span><br>
+                                <br>
+                                Cet abonné possède déjà un sur-abonnement.
+                                <br>
+                                Veuillez attendre que l’abonnement actuel se finisse avant d’en ajouter un autre.
+                            </p>
+                            <a href="#" onclick="closePopup()">J'ai compris</a>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+
             ?>
 
             <p style="font-size: 24px; display: inline-block; margin: 0;">Utilisateur N° <?= $_GET['idUser'] ?> - Historique des paiements</p>
@@ -151,7 +216,14 @@ else {
 
                     <div style="margin: 20px 0; padding: 0">
                         <div class="name">
-                            <a href="ajoutPaiement.php?idUser=<?= $_GET['idUser'] ?>" style="text-decoration: none; color: royalblue">Ajouter un paiement</a>
+                            <?php
+
+                            if($bdd->query("SELECT id FROM Paiement WHERE idUser = '" . $_GET['idUser'] . "' AND CURDATE() < dateDebutAbonnement")->fetch())
+                                echo "<a href='historiquePaiement.php?idUser=" . $_GET['idUser'] . "&error' style='text-decoration: none; color: royalblue'>Ajouter un paiement</a>";
+                            else
+                                echo "<a href='ajoutPaiement.php?idUser=" . $_GET['idUser'] . "' style='text-decoration: none; color: royalblue'>Ajouter un paiement</a>";
+
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -161,7 +233,7 @@ else {
                         <ul>
                             <?php
 
-                            $listePaiement = $bdd->query("SELECT * FROM Paiement WHERE idUser = '" . $_GET['idUser'] . "'");
+                            $listePaiement = $bdd->query("SELECT * FROM Paiement WHERE idUser = '" . $_GET['idUser'] . "' ORDER BY dateDebutAbonnement DESC");
 
                             $rien = true;
 
@@ -191,6 +263,11 @@ else {
                 </div>
             </div>
             <a class="button" style="position: absolute; left: 4%; bottom: 10%" href="../index.php?idUser=<?= $_GET['idUser'] ?>">retour</a>
+            <script type="text/javascript">
+                function closePopup() {
+                    document.getElementById("overlay").style.display = "none";
+                }
+            </script>
         </body>
         </html>
         <?php

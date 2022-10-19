@@ -13,8 +13,8 @@ if (isset($_POST['montant']) and isset($_POST['mois']) and isset($_POST['etat'])
     $dateDebut = date('Y-m-d');
 
     // Cas où il existe déjà un abonnement en cours
-    if($donnes = $bdd->query("SELECT dateFinAbonnement FROM Paiement WHERE idUser = '$idUser' AND dateDebutAbonnement <= CURDATE() AND CURDATE() <= dateFinAbonnement")->fetch()) {
-        $dateFinBDD = date('Y-m-d', strtotime($donnes['dateFinAbonnement']));
+    if($donnes = $bdd->query("SELECT dateFinAbonnement AS finAbonnement FROM Paiement WHERE idUser = '$idUser' AND dateDebutAbonnement <= CURDATE() AND CURDATE() <= dateFinAbonnement")->fetch()) {
+        $dateFinBDD = date('Y-m-d', strtotime($donnes['finAbonnement']));
         $dateDebut = date('Y-m-d', strtotime("$dateFinBDD + 1 day"));
         $dateFin = date('Y-m-d', strtotime("$dateDebut + $dureeMois months"));
 
