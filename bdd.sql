@@ -143,7 +143,7 @@ CREATE TABLE Paiement (
     montant INT DEFAULT 0,
     datePaiement DATETIME NOT NULL DEFAULT current_timestamp(),
     dateDebutAbonnement DATE NOT NULL,
-    dureeMois INT NOT NULL DEFAULT 12,
+    dateFinAbonnement DATE NOT NULL,
     etat VARCHAR(20) NOT NULL CHECK (etat IN ('EXECUTE AUTO', 'EXECUTE MANUELLE', 'EN ATTENTE', 'EXONERATION')),
     FOREIGN KEY (idUser) REFERENCES User(id)
 );
