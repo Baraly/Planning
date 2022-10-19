@@ -1,5 +1,5 @@
 function/bdd.php
-cp1699398p07_test.sql
+donneesBDD.sql
 function/mail.php
 automatisation/suppression.php
 automatisation/emailsMensuels/emailsAutoMensuel.php
