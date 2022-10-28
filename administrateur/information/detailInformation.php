@@ -210,7 +210,7 @@ else {
             <div style="border: 1px solid white; border-radius: 10px; box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.25)">
                 <div style="text-align: center">
                     <p style="font-size: 20px; padding: 0; margin: 6px 0">Liste des utilisateurs</p>
-                    <hr style="width: 90%; padding: 0; margin: 0">
+                    <hr style="width: 90%; padding: 0; margin: 0; display: inline-block">
                 </div>
                 <ul>
                     <?php
@@ -253,7 +253,7 @@ else {
                     <p>Message : <a href="detailInformation.php?idInfo=<?= $idInfo ?>&overview" style="color: royalblue; background-color: white; text-decoration: none">Voir le message</a></p>
                     <p>Description : <?= $requesteInfo['description'] ?></p>
                     <p>Date de publication : <?= date('d/m/Y', strtotime($requesteInfo['dateMessage'])) ?></p>
-                    <p>Date de clôture : <?php if(empty($requesteInfo['dateCloture'])) echo "Pas défini <a href='creationInformationPost.php?cloture&idInfo=$idInfo' style='background-color: royalblue; color: white; padding: 4px 8px; border-radius: 10px; text-decoration: none'>clôturer</a>"; else echo date('d/m/Y', strtotime($requesteInfo['dateMessage'])); ?></p>
+                    <p>Date de clôture : <?php if(empty($requesteInfo['dateCloture'])) echo "Pas défini <a href='creationInformationPost.php?cloture&idInfo=$idInfo' style='background-color: royalblue; color: white; padding: 4px 8px; border-radius: 10px; text-decoration: none'>clôturer</a>"; else echo date('d/m/Y', strtotime($requesteInfo['dateCloture'])); ?></p>
                 </div>
                 <div>
                     <?php
