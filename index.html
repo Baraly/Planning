@@ -13,6 +13,16 @@
             font-size: 20px;
         }
 
+        .container {
+            display: grid;
+            grid-template-columns: 60% 40%;
+            margin: 20px 10px 160px;
+        }
+
+        .firstElementGrid {
+            text-align: left;
+        }
+
         h1 {
             margin: 20px 0;
             padding: 0;
@@ -26,28 +36,127 @@
             position: absolute;
         }
 
+        .divImg {
+            display: inline-block;
+            height: 600px;
+            position: relative;
+            width: 770px;
+            text-align: left;
+            margin-left: 20px;
+        }
+
         .img2 {
             margin-left: 250px;
             margin-top: 70px;
         }
+
         .img3 {
             margin-left: 500px;
             margin-top: 10px;
         }
+
+        .info {
+            margin: 0 30px;
+            width: 60%
+        }
+
+        .title {
+            font-size: 24px;
+        }
+
+        .button {
+            color: white;
+            background-color: #212F3D;
+            padding: 8px 16px;
+            box-shadow: 0 20px 14px -12px rgba(33, 47, 61, 0.5);
+            border-radius: 10px;
+            text-decoration: none
+        }
+
+        @media screen and (max-width: 1370px) {
+            .container {
+                display: block;
+                text-align: center;
+                height: 100%;
+                margin: 0 10px 80px;
+            }
+
+            .firstElementGrid {
+                text-align: center;
+                display: block;
+            }
+
+            .secondElementGrid {
+                display: inline-block;
+                width: 60%;
+                text-align: left;
+            }
+
+            .divImg {
+                margin: 0;
+            }
+        }
+
+        @media screen and (max-width: 1100px) {
+            .info, .secondElementGrid {
+                width: 80%;
+            }
+        }
+
+        @media screen and (max-width: 1000px) {
+            .info, .secondElementGrid {
+                width: 90%;
+                font-size: 250%;
+            }
+
+            img {
+                height: 720px;
+            }
+
+            .divImg {
+                width: 100%;
+                height: 800px;
+            }
+
+            .img2 {
+                margin-left: 260px;
+                margin-top: 100px;
+            }
+
+            .img3 {
+                margin-left: 520px;
+                margin-top: 30px;
+            }
+
+            .title {
+                font-size: 110%;
+            }
+
+            .button {
+                padding: 14px 40px;
+                border-radius: 20px;
+                font-size: 105%;
+            }
+
+            .titlePage {
+                font-size: 300%;
+                margin-bottom: 30px;
+            }
+        }
     </style>
 </head>
 <body>
-<h1>Planning</h1>
-<div style="display: grid; grid-template-columns: 60% 40%; margin: 0 10px 320px;">
+<h1 class="titlePage">Planning</h1>
+<div class="container">
 
-    <div style="text-align: left; padding: 0 20px">
-        <div style="position: relative; display: inline-block">
+    <div class="firstElementGrid">
+        <div class="divImg">
             <img src="images/accueil.jpeg" alt="accueil screen shot" class="img1"/>
             <img src="images/historique.jpeg" alt="historique screen shot" class="img2"/>
             <img src="images/menu.jpeg" alt="menu screen shot" class="img3"/>
         </div>
     </div>
-    <div>
+    <div class="secondElementGrid">
         <p>
             Planning est une section d’un site web créé par un jeune étudiant en <span style="background: -webkit-linear-gradient(45deg, #4441DA, #D60BDA); -webkit-background-clip: text; -webkit-text-fill-color: transparent">licence d’informatique</span> 💻.
             Ce service est destiné aux routiers qui souhaitent pouvoir stocker (automatiquement) leurs journées.
@@ -59,36 +168,36 @@
             C’est donc pour ça que dès votre inscription, vous pourrez profiter de 6 mois de remise sur l’<span style="color: #DDB03E">abonnement premium</span> (dont celui-ci a un coût de 1€/an).
         </p>
         <div style="text-align: center; margin-top: 50px">
-            <a href="utilisateur/index.php" style="color: white; background-color: #212F3D; padding: 8px 16px; box-shadow: 0 20px 14px -12px rgba(33, 47, 61, 0.5); border-radius: 10px; text-decoration: none">Accéder à l'application</a>
+            <a href="utilisateur/index.php" class="button">Accéder à l'application</a>
         </div>
     </div>
 
 </div>
 
-<div style="margin: 0 30px; width: 60%">
+<div class="info">
 
     <div>
-        <h1 style="font-size: 24px; text-align: left">Qu'est-ce que l'<span style="color: #DDB03E">abonnement premium</span> ?</h1>
+        <h1 style="text-align: left" class="title">Qu'est-ce que l'<span style="color: #DDB03E">abonnement premium</span> ?</h1>
         <div style="text-align: left; margin-left: 20px">
             <p>
-                L’abonnement premium est en option. Sans, vous pourrez commencer / finir vos journées et obtenir des récaptitulatifs mensuels.
+                L’abonnement premium est en option. Sans, vous pourrez commencer / finir vos journées et obtenir des récapitulatifs mensuels.
                 Avec cet abonnement en plus, vous pourrez ajouter et modifier des journées.
             </p>
             <p>
                 Son coût n’est que de 1€/an. Il n’est utile que pour que je puisse payer mon hébergeur web (lieu où sont stockées les données).
             </p>
             <p>
-                Dès votre inscription, vous aurrez accès à cet abonnement gratuitement pendant 6 mois.
+                Dès votre inscription, vous aurez accès à cet abonnement gratuitement pendant 6 mois.
                 Après cette période d’essais, vous aurez le choix de continuer à profiter de ces avantages ou bien de passer à une version plus basique.
             </p>
         </div>
     </div>
 
     <div style="margin-top: 20px; display: inline-block">
-        <h1 style="font-size: 24px; text-align: left">Mais qui suis-je ?</h1>
+        <h1 style="text-align: left" class="title">Mais qui suis-je ?</h1>
         <div style="text-align: left; margin-left: 20px">
             <p>
-                Je m’appelle Baptiste, je suis en 3ème année de licence d’informatique à l’<a href="https://umontpellier.fr" target="_blank" style="color: #F65661; text-decoration: none">Université de Montpellier</a>. Je suis passionné pour le développement logiciel et web.
+                Je m’appelle Baptiste, je suis actuellement en 3ème année de licence informatique à l’<a href="https://umontpellier.fr" target="_blank" style="color: #F65661; text-decoration: none">Université de Montpellier</a>. Je suis passionné par le développement logiciel et web.
             </p>
             <p>
                 J’ai envie de rendre l’informatique accessible pour tous et agréable à utiliser.
@@ -96,7 +205,7 @@
             </p>
             <p>
                 Pour information, vous vous trouvez sur mon site internet 😱.
-                Vous trouverez ici ma page d’accueil : <a href="https://baraly.fr" target="_blank" style="color: royalblue; text-decoration: none">Page d’accueil</a>.
+                Vous pourrez voir ici ma superbe page d’accueil : <a href="https://baraly.fr" target="_blank" style="color: royalblue; text-decoration: none">Page d’accueil</a>.
             </p>
         </div>
     </div>
